@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Trắc Nghiệm Lịch Sử Đảng Cộng Sản Việt Nam</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#ffe1e1',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Lexend', sans-serif; }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-200">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-800/90 backdrop-blur border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Title -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-red-500/20">
+                        <i class="fa-solid fa-star text-gold-400"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight text-slate-900 dark:text-white">Lịch Sử Đảng</h1>
+                        <p class="text-xs text-red-600 dark:text-red-400 font-medium">Ôn Tập 187 Câu Trắc Nghiệm</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1">
+                    <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                        <i class="fa-solid fa-house mr-2"></i>Tổng quan
+                    </button>
+                    <button onclick="switchView('practice')" id="nav-practice" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                        <i class="fa-solid fa-book-open mr-2"></i>Luyện tập
+                    </button>
+                    <button onclick="switchView('exam-setup')" id="nav-exam" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                        <i class="fa-solid fa-clock-rotate-left mr-2"></i>Thi thử
+                    </button>
+                    <button onclick="switchView('flashcard')" id="nav-flashcard" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                        <i class="fa-solid fa-clone mr-2"></i>Flashcard
+                    </button>
+                    <button onclick="switchView('search')" id="nav-search" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i>Tra cứu
+                    </button>
+                </nav>
+
+                <!-- Actions / Controls -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition-colors" title="Bật/tắt chế độ tối">
+                        <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                    </button>
+                    <button onclick="resetProgress()" class="text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30 transition-colors" title="Đặt lại tiến độ">
+                        <i class="fa-solid fa-rotate-right mr-1"></i>Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Bar -->
+        <div class="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 flex justify-around text-xs">
+            <button onclick="switchView('dashboard')" class="p-2 text-center text-slate-600 dark:text-slate-300"><i class="fa-solid fa-house block text-base mb-0.5"></i>Tổng quan</button>
+            <button onclick="switchView('practice')" class="p-2 text-center text-slate-600 dark:text-slate-300"><i class="fa-solid fa-book-open block text-base mb-0.5"></i>Luyện tập</button>
+            <button onclick="switchView('exam-setup')" class="p-2 text-center text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clock-rotate-left block text-base mb-0.5"></i>Thi thử</button>
+            <button onclick="switchView('flashcard')" class="p-2 text-center text-slate-600 dark:text-slate-300"><i class="fa-solid fa-clone block text-base mb-0.5"></i>Flashcard</button>
+            <button onclick="switchView('search')" class="p-2 text-center text-slate-600 dark:text-slate-300"><i class="fa-solid fa-magnifying-glass block text-base mb-0.5"></i>Tra cứu</button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- VIEW 1: DASHBOARD (Trang chủ & Thống kê) -->
+        <div id="view-dashboard" class="space-y-6">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-700 via-red-800 to-amber-700 text-white p-6 sm:p-8 shadow-xl">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl font-black">
+                    <i class="fa-solid fa-flag"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-200 rounded-full text-xs font-semibold mb-3 border border-amber-400/30">
+                        <i class="fa-solid fa-graduation-cap mr-1"></i> Tài liệu chuẩn Slide 01 – 15
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Hệ Thống Ôn Tập Trắc Nghiệm Lịch Sử Đảng</h2>
+                    <p class="text-red-100 text-sm sm:text-base mb-6 leading-relaxed">
+                        Hỗ trợ ghi nhớ nhanh 187 câu hỏi trọng tâm với chế độ Luyện tập từng Slide, Thi thử ngẫu nhiên, Flashcard thông minh và Lời giải chi tiết.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="startPracticeAll()" class="px-5 py-2.5 rounded-xl bg-amber-400 text-slate-900 font-bold hover:bg-amber-300 transition-all shadow-lg shadow-amber-500/20 flex items-center">
+                            <i class="fa-solid fa-play mr-2"></i> Bắt đầu Luyện Tập ngay
+                        </button>
+                        <button onclick="switchView('exam-setup')" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold backdrop-blur border border-white/20 transition-all flex items-center">
+                            <i class="fa-solid fa-bolt mr-2"></i> Thi thử 20 câu
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tổng số câu</span>
+                        <div class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-total-q">187</div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gồm 15 Slide bài học</p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Đã hoàn thành</span>
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-answered">0 / 187</div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div id="stat-progress-bar" class="bg-blue-500 h-full w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tỉ lệ trả lời đúng</span>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-accuracy">0%</div>
+                    <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1" id="stat-correct-count">0 câu đúng</p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Đã đánh dấu</span>
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-bookmarked">0</div>
+                    <button onclick="switchView('search', 'bookmarked')" class="text-xs text-amber-600 dark:text-amber-400 font-medium hover:underline mt-1 inline-block">
+                        Xem danh sách <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slide Selection List -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center">
+                        <i class="fa-solid fa-layer-group text-red-600 mr-2"></i> Luyện tập theo Slide Bài Học
+                    </h3>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Chọn Slide để luyện câu hỏi</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="slide-cards-grid">
+                    <!-- Dynamic rendering by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: PRACTICE MODE (Luyện tập) -->
+        <div id="view-practice" class="hidden space-y-6">
+            <!-- Practice Header Controls -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3 w-full md:w-auto">
+                    <button onclick="switchView('dashboard')" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-arrow-left text-lg"></i>
+                    </button>
+                    <div>
+                        <span id="practice-slide-tag" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 uppercase">
+                            Slide 01
+                        </span>
+                        <h3 id="practice-title" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Tất cả câu hỏi</h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+                    <div class="text-xs text-slate-500 dark:text-slate-400">
+                        Câu <span id="practice-current-idx" class="font-bold text-slate-900 dark:text-white text-sm">1</span> / <span id="practice-total-count">187</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <button onclick="toggleBookmarkCurrent()" id="btn-bookmark" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-amber-500 transition-colors">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </button>
+                        <button onclick="prevQuestion()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextQuestion()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-md">
+                <!-- Question Number & Topic -->
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-700">
+                    <span id="question-id-badge" class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                        Câu hỏi #1
+                    </span>
+                    <span id="question-topic-badge" class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                        Chương I - Nhập môn
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed mb-6">
+                    Nội dung câu hỏi sẽ hiển thị tại đây...
+                </h2>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Dynamic rendering -->
+                </div>
+
+                <!-- Explanation Box (Shown after selection) -->
+                <div id="explanation-box" class="hidden mt-6 p-4 sm:p-5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-slate-800 dark:text-slate-200">
+                    <div class="flex items-center space-x-2 text-amber-800 dark:text-amber-400 font-bold mb-1">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Lời giải chi tiết:</span>
+                    </div>
+                    <p id="explanation-text" class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                        Giải thích lý do chọn đáp án...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bottom Question Palette -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-600 dark:text-slate-300">Danh sách câu hỏi:</span>
+                    <div class="flex items-center space-x-3 text-xs">
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 mr-1"></span> Đúng</span>
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 mr-1"></span> Sai</span>
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-700 mr-1"></span> Chưa làm</span>
+                    </div>
+                </div>
+                <div id="question-palette" class="flex flex-wrap gap-2 max-h-40 overflow-y-auto custom-scrollbar p-1">
+                    <!-- Palette items JS generated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: EXAM MODE (Thi thử) -->
+        <div id="view-exam-setup" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-md">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 text-white mx-auto flex items-center justify-center text-3xl shadow-lg mb-3">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cấu Hình Đề Thi Trắc Nghiệm</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Hệ thống sẽ đảo ngẫu nhiên câu hỏi và đáp án để kiểm tra thực tế</p>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Số lượng câu hỏi:</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="setExamCount(20)" class="exam-count-btn p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center font-bold text-slate-700 dark:text-slate-200 hover:border-red-500 transition-all" data-count="20">
+                                20 Câu <span class="block text-xs font-normal text-slate-400">15 phút</span>
+                            </button>
+                            <button onclick="setExamCount(50)" class="exam-count-btn p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center font-bold text-slate-700 dark:text-slate-200 hover:border-red-500 transition-all border-red-500 bg-red-50 dark:bg-red-950/20 text-red-600" data-count="50">
+                                50 Câu <span class="block text-xs font-normal text-slate-400">35 phút</span>
+                            </button>
+                            <button onclick="setExamCount(100)" class="exam-count-btn p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center font-bold text-slate-700 dark:text-slate-200 hover:border-red-500 transition-all" data-count="100">
+                                100 Câu <span class="block text-xs font-normal text-slate-400">60 phút</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Phạm vi câu hỏi:</label>
+                        <select id="exam-slide-filter" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <option value="all">Tất cả Slide (Slide 01 - 15)</option>
+                            <!-- JS options -->
+                        </select>
+                    </div>
+
+                    <button onclick="startExam()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-base shadow-lg shadow-red-500/20 hover:opacity-95 transition-all">
+                        <i class="fa-solid fa-play mr-2"></i> Bắt đầu Thi Ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXAM ACTIVE VIEW -->
+        <div id="view-exam-active" class="hidden space-y-6">
+            <!-- Exam Header -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-red-600 dark:text-red-400 uppercase">Chế độ thi thử</span>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Câu <span id="exam-current-num">1</span> / <span id="exam-total-num">50</span></h3>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400 block">Thời gian còn lại</span>
+                        <span id="exam-timer" class="font-mono text-xl font-bold text-amber-600 dark:text-amber-400">35:00</span>
+                    </div>
+                    <button onclick="finishExam()" class="px-4 py-2 rounded-xl bg-red-600 text-white font-bold text-xs hover:bg-red-700 transition-colors shadow">
+                        Nộp bài
+                    </button>
+                </div>
+            </div>
+
+            <!-- Exam Question Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-md">
+                <h2 id="exam-question-text" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed mb-6">
+                    Nội dung câu hỏi thi...
+                </h2>
+
+                <div id="exam-options-container" class="space-y-3">
+                    <!-- Options JS generated -->
+                </div>
+            </div>
+
+            <!-- Exam Navigation Footer -->
+            <div class="flex items-center justify-between">
+                <button onclick="prevExamQuestion()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm hover:opacity-90">
+                    <i class="fa-solid fa-chevron-left mr-1"></i> Câu trước
+                </button>
+                <button onclick="nextExamQuestion()" class="px-5 py-2.5 rounded-xl bg-red-600 text-white font-bold text-sm hover:bg-red-700 shadow">
+                    Câu tiếp theo <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- EXAM RESULT VIEW -->
+        <div id="view-exam-result" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-md text-center">
+                <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-4xl mx-auto mb-4">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Kết Quả Bài Thi</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Đã hoàn thành bài kiểm tra trắc nghiệm</p>
+
+                <div class="grid grid-cols-3 gap-3 mb-6">
+                    <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                        <span class="text-xs text-slate-400 block">Số điểm</span>
+                        <span id="result-score-text" class="text-2xl font-black text-red-600">8.5 / 10</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                        <span class="text-xs text-slate-400 block">Số câu đúng</span>
+                        <span id="result-correct-text" class="text-2xl font-black text-emerald-600">42 / 50</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                        <span class="text-xs text-slate-400 block">Thời gian làm</span>
+                        <span id="result-time-text" class="text-2xl font-black text-slate-700 dark:text-slate-300">18:24</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="switchView('dashboard')" class="flex-1 py-3 rounded-xl bg-slate-200 dark:bg-slate-700 font-bold text-slate-800 dark:text-slate-200">
+                        Về trang chủ
+                    </button>
+                    <button onclick="switchView('exam-setup')" class="flex-1 py-3 rounded-xl bg-red-600 font-bold text-white shadow hover:bg-red-700">
+                        Thi lại bài khác
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: FLASHCARD MODE -->
+        <div id="view-flashcard" class="hidden max-w-xl mx-auto space-y-6">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Thẻ Ghi Nhớ Nhanh</h3>
+                <span class="text-xs text-slate-500 dark:text-slate-400">Thẻ <span id="fc-current-idx">1</span> / <span id="fc-total-count">187</span></span>
+            </div>
+
+            <!-- Flashcard Component -->
+            <div onclick="flipFlashcard()" class="perspective-1000 w-full h-80 cursor-pointer">
+                <div id="flashcard-inner" class="relative w-full h-full transform-style-3d transition-transform duration-500 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 flex flex-col justify-between">
+                    <!-- Front Side -->
+                    <div class="backface-hidden absolute inset-0 p-6 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-2xl">
+                        <div>
+                            <span class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider" id="fc-topic">Slide 01</span>
+                            <h2 id="fc-question" class="text-lg font-bold text-slate-900 dark:text-white mt-4 leading-relaxed">
+                                Câu hỏi flashcard...
+                            </h2>
+                        </div>
+                        <div class="text-center text-xs text-slate-400 font-medium">
+                            <i class="fa-solid fa-rotate mr-1"></i> Chạm hoặc nhấp để xem đáp án đúng
+                        </div>
+                    </div>
+
+                    <!-- Back Side -->
+                    <div class="backface-hidden rotate-y-180 absolute inset-0 p-6 flex flex-col justify-between bg-slate-900 text-white rounded-2xl border-2 border-amber-500">
+                        <div>
+                            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Đáp án đúng & Lời giải</span>
+                            <h3 id="fc-answer" class="text-lg font-bold text-amber-300 mt-3 leading-relaxed">
+                                Đáp án...
+                            </h3>
+                            <p id="fc-explanation" class="text-xs text-slate-300 mt-3 leading-relaxed">
+                                Lời giải chi tiết...
+                            </p>
+                        </div>
+                        <div class="text-center text-xs text-slate-400 font-medium">
+                            <i class="fa-solid fa-rotate mr-1"></i> Chạm để lật lại câu hỏi
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcard Controls -->
+            <div class="flex items-center justify-between">
+                <button onclick="prevFlashcard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Thẻ trước
+                </button>
+                <button onclick="nextFlashcard()" class="px-5 py-2.5 rounded-xl bg-red-600 text-white font-bold shadow">
+                    Thẻ tiếp theo <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- VIEW 5: SEARCH & REVIEW MODE (Tra cứu) -->
+        <div id="view-search" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-grow">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <input type="text" id="search-input" oninput="filterQuestionsSearch()" placeholder="Nhập từ khóa tìm kiếm (ví dụ: Nguyễn Ái Quốc, 1930, Cương lĩnh...)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
+                    </div>
+                    <select id="search-filter-type" onchange="filterQuestionsSearch()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-sm font-medium">
+                        <option value="all">Tất cả câu hỏi</option>
+                        <option value="bookmarked">Chỉ câu đã đánh dấu ⭐</option>
+                        <option value="incorrect">Các câu đã làm sai ❌</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Search Results List -->
+            <div id="search-results-list" class="space-y-4">
+                <!-- JS dynamic list -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <p>Ứng dụng ôn tập Trắc nghiệm Lịch sử Đảng Cộng sản Việt Nam (187 Câu Hỏi Chuẩn)</p>
+    </footer>
+
+    <!-- JavaScript Application Core -->
+    <script>
+        // -------------------------------------------------------------
+        // FULL QUESTION DATASET (187 QUESTIONS FROM DOCUMENT)
+        // -------------------------------------------------------------
+        const rawQuestions = [
+            // Slide 01
+            { id: 1, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Đối tượng nghiên cứu của môn Lịch sử Đảng Cộng sản Việt Nam là gì?", opts: ["Quá trình hình thành, hoạt động và vai trò lãnh đạo của Đảng", "Chỉ hệ thống pháp luật của Việt Nam", "Chỉ lịch sử các cuộc kháng chiến chống ngoại xâm", "Lịch sử thế giới từ cổ đại đến hiện đại"], ans: 0, exp: "Slide 1 xác định ba yếu tố: hình thành, hoạt động và vai trò lãnh đạo của Đảng." },
+            { id: 2, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Phạm vi thời gian nghiên cứu của môn Lịch sử Đảng là gì?", opts: ["Chỉ từ năm 1945 đến 1975", "Từ khi Đảng Cộng sản Việt Nam ra đời đến nay", "Chỉ từ năm 1986 đến nay", "Từ thời Hùng Vương đến nay"], ans: 1, exp: "Phạm vi của học phần bắt đầu từ khi Đảng ra đời và kéo dài đến hiện tại." },
+            { id: 3, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Hai cơ sở phương pháp luận được nêu trong slide là gì?", opts: ["Phân tích SWOT và khảo sát xã hội học", "Chủ nghĩa duy vật biện chứng và chủ nghĩa duy vật lịch sử", "Phương pháp thực nghiệm và mô phỏng", "Phương pháp thống kê và phương pháp điều tra"], ans: 1, exp: "Slide 1 xếp duy vật biện chứng và duy vật lịch sử vào nhóm phương pháp luận." },
+            { id: 4, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Chủ nghĩa duy vật biện chứng được dùng để làm gì trong nghiên cứu lịch sử Đảng?", opts: ["Phân tích sự kiện theo logic nhân quả và sự phát triển", "Chỉ ghi nhớ ngày tháng và tên nhân vật", "Bỏ qua mối liên hệ giữa các sự kiện", "Chỉ sưu tầm di vật khảo cổ"], ans: 0, exp: "Cách tiếp cận biện chứng giúp nhìn ra quan hệ nhân quả và sự vận động, phát triển." },
+            { id: 5, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Phương pháp lịch sử nhằm mục đích nào sau đây?", opts: ["Loại bỏ trình tự thời gian của sự kiện", "Chỉ so sánh số liệu kinh tế hiện nay", "Trình bày khách quan sự ra đời và phát triển của Đảng theo từng giai đoạn", "Dự đoán kết quả bầu cử theo mô hình toán học"], ans: 2, exp: "Phương pháp lịch sử tái hiện sự kiện theo tiến trình lịch sử từng giai đoạn." },
+            { id: 6, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Ngoài phương pháp lịch sử, slide 1 còn nêu phương pháp cụ thể nào?", opts: ["Phương pháp thí nghiệm lâm sàng", "Phương pháp so sánh", "Phương pháp lập trình tuyến tính", "Phương pháp đo địa chấn"], ans: 1, exp: "Slide 1 liệt kê thêm phương pháp so sánh." },
+            { id: 7, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Nội dung nghiên cứu nổi bật của môn học là gì?", opts: ["Lịch sử phát triển máy tính cá nhân", "Chỉ các tác phẩm văn học dân gian", "Sự hình thành các chòm sao", "Đường lối và chính sách của Đảng qua các thời kỳ"], ans: 3, exp: "Nội dung trọng tâm là đường lối, chính sách lãnh đạo trong từng thời kỳ." },
+            { id: 8, slide: 1, topic: "Slide 01 — Đối tượng, phạm vi, phương pháp", q: "Mối quan hệ giữa chức năng và nhiệm vụ của môn học được hiểu như thế nào?", opts: ["Nhiệm vụ hoàn toàn không liên quan chức năng", "Chức năng chỉ là danh sách mốc thời gian", "Nhiệm vụ thay thế hoàn toàn chức năng", "Nhiệm vụ cụ thể hóa chức năng trong giảng dạy và học tập"], ans: 3, exp: "Slide 1 mô tả nhiệm vụ là sự cụ thể hóa chức năng của môn học." },
+
+            // Slide 02
+            { id: 9, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Mục đích cốt lõi khi sinh viên học môn Lịch sử Đảng là gì?", opts: ["Chỉ tìm hiểu lịch sử nước ngoài", "Thay thế mọi môn khoa học xã hội khác", "Hiểu vai trò lãnh đạo cách mạng của Đảng và vận dụng vào thực tiễn", "Chỉ học thuộc toàn bộ năm tháng"], ans: 2, exp: "Theo slide 2, học để hiểu vai trò lãnh đạo và liên hệ với cuộc sống." },
+            { id: 10, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Học môn này giúp sinh viên hiểu rõ quá trình nào?", opts: ["Quá trình hình thành các hành tinh", "Quá trình phát triển công nghệ bán dẫn", "Quá trình hình thành đường lối lãnh đạo cách mạng của Đảng", "Quá trình vận hành thị trường chứng khoán"], ans: 2, exp: "Slide 2 nhấn mạnh sự hình thành đường lối cách mạng qua lịch sử." },
+            { id: 11, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Môn học cung cấp nền tảng gì cho thế hệ trẻ?", opts: ["Chỉ kỹ năng sử dụng bảng tính", "Chỉ kiến thức khí tượng", "Nền tảng lý luận và định hướng tư tưởng", "Kỹ năng chế tạo công cụ cơ khí"], ans: 2, exp: "Đây là một giá trị giáo dục được nêu trực tiếp trong slide." },
+            { id: 12, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Kỹ năng nào cần được vận dụng khi học môn Lịch sử Đảng?", opts: ["Chỉ dùng trí nhớ ngắn hạn", "Tách tuyệt đối lý luận ra khỏi thực tiễn", "Chỉ viết lại slide mà không phân tích", "Liên hệ giữa lý luận và thực tiễn cách mạng Việt Nam"], ans: 3, exp: "Slide 2 yêu cầu gắn nội dung lý luận với thực tiễn cách mạng Việt Nam." },
+            { id: 13, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Vì sao môn Lịch sử Đảng có ý nghĩa đặc biệt theo slide 2?", opts: ["Thay thế hoàn toàn việc đọc tài liệu lịch sử", "Không cần nghiên cứu các giai đoạn", "Chỉ cung cấp kiến thức khoa học tự nhiên", "Cung cấp thông tin thực tiễn và lý luận về vai trò lãnh đạo của Đảng qua các thời kỳ"], ans: 3, exp: "Sự kết hợp thông tin thực tiễn với cơ sở lý luận là điểm được nhấn mạnh." },
+            { id: 14, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Muốn hiểu bản chất khoa học của môn học, sinh viên cần chú trọng điều gì?", opts: ["Không cần kiểm tra bối cảnh", "Chỉ xét sự kiện theo cảm tính", "Đánh giá tính khách quan trong tiếp cận sự kiện lịch sử", "Chỉ tin vào các giai thoại truyền miệng"], ans: 2, exp: "Tính khách quan khi đánh giá sự kiện là yêu cầu của tiếp cận khoa học." },
+            { id: 15, slide: 2, topic: "Slide 02 — Mục tiêu và ý nghĩa học tập", q: "Để phân biệt phương pháp luận và phương pháp cụ thể, slide 2 khuyên sinh viên làm gì?", opts: ["Bỏ qua khái niệm phương pháp luận", "Thay thế nghiên cứu bằng suy đoán", "Áp dụng phương pháp phân tích logic vào các sự kiện", "Chỉ chú ý ngày tháng"], ans: 2, exp: "Áp dụng phân tích logic giúp nhận diện cách nhìn chung và kỹ thuật nghiên cứu cụ thể." },
+
+            // Slide 03
+            { id: 16, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Đánh giá các giai đoạn cách mạng Việt Nam giúp rèn những kỹ năng gì?", opts: ["Chỉ học thuộc khái niệm rời rạc", "Chỉ tính nhẩm và ghi tốc ký", "Chỉ dịch thuật ngữ", "Tổng hợp, phân tích và phản biện lịch sử"], ans: 3, exp: "Slide 3 nêu rõ ba kỹ năng: tổng hợp, phân tích, phản biện." },
+            { id: 17, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Các phương pháp nghiên cứu cụ thể giúp sinh viên điều gì?", opts: ["Chỉ học lý thuyết mà không diễn giải", "Hiểu rõ và trình bày mạch lạc các sự kiện lịch sử Đảng", "Đánh đồng mọi sự kiện", "Bỏ qua trật tự lịch sử"], ans: 1, exp: "Phương pháp cụ thể có ích cho việc nắm bắt và trình bày sự kiện." },
+            { id: 18, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Phương pháp logic giúp phát triển năng lực nào?", opts: ["Thực hành thí nghiệm hóa học", "Tư duy phân loại tư tưởng và chính sách", "Ghi nhớ máy móc duy nhất một ngày tháng", "Tính toán cấu trúc công trình"], ans: 1, exp: "Slide 3 liên hệ phương pháp logic với tư duy phân loại." },
+            { id: 19, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Hiểu đúng đối tượng nghiên cứu giúp sinh viên trong phân tích chính trị - xã hội ra sao?", opts: ["Không cần tìm hiểu bối cảnh lịch sử", "Hiểu bản chất khoa học và cách mạng của đường lối Đảng", "Chỉ quan tâm các nhân vật riêng lẻ", "Phủ nhận mọi mối liên hệ giữa sự kiện"], ans: 1, exp: "Theo slide 3, nắm đối tượng nghiên cứu là cơ sở để phân tích thực tiễn." },
+            { id: 20, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Biện pháp tự học nào được slide 3 khuyến khích?", opts: ["Bỏ phần ghi chú", "Tự vẽ sơ đồ tư duy hệ thống hóa bài học", "Chỉ đọc tiêu đề chương", "Chỉ học riêng các đáp án"], ans: 1, exp: "Sơ đồ tư duy hỗ trợ tổng hợp và nhớ quan hệ giữa các ý." },
+            { id: 21, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Một chức năng cơ bản của môn học là gì?", opts: ["Đào tạo bác sĩ lâm sàng", "Đào tạo kỹ sư cầu đường", "Đào tạo vận động viên", "Đào tạo lý luận chính trị cho cán bộ và sinh viên"], ans: 3, exp: "Đây là chức năng được liệt kê tại slide 3." },
+            { id: 22, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Giá trị thực hành của chức năng đào tạo lý luận chính trị thể hiện ở đâu?", opts: ["Không liên hệ với hành động", "Vận dụng lý tưởng cách mạng vào định hướng sống và hành động", "Chỉ ghi nhớ khẩu hiệu", "Chỉ học lý thuyết trừu tượng"], ans: 1, exp: "Slide 3 gắn đào tạo lý luận với định hướng sống và hành động." },
+            { id: 23, slide: 3, topic: "Slide 03 — Kỹ năng và chức năng môn học", q: "Để lý giải nguyên nhân ra đời của Đảng, cần vận dụng kiến thức về những phong trào nào?", opts: ["Phong trào công nhân và phong trào yêu nước đầu thế kỷ XX", "Phong trào cải cách tôn giáo thế kỷ XVI", "Phong trào Phục hưng châu Âu", "Chỉ phong trào kinh tế thế giới sau 2000"], ans: 0, exp: "Hai phong trào nói trên là bối cảnh trực tiếp được slide 3 yêu cầu nắm." },
+
+            // Slide 04
+            { id: 24, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Hình ảnh “con đỉa hai vòi” trên slide 4 dùng để nói về điều gì?", opts: ["Chiến dịch Biên giới 1950", "Chủ nghĩa duy vật lịch sử", "Phong trào dân chủ 1936-1939", "Chủ nghĩa đế quốc"], ans: 3, exp: "Đây là hình ảnh chỉ chủ nghĩa đế quốc trong phần bối cảnh thế giới." },
+            { id: 25, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Sự kiện cách mạng thế giới nào được nhấn mạnh trong bối cảnh ra đời của Đảng?", opts: ["Cách mạng Tháng Mười Nga", "Chiến thắng Điện Biên Phủ", "Cách mạng Tháng Tám ở Việt Nam", "Cách mạng công nghiệp lần thứ tư"], ans: 0, exp: "Slide 4 nêu Cách mạng Tháng Mười và tác động thức tỉnh các dân tộc." },
+            { id: 26, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "“QT3” xuất hiện trong phần bối cảnh thế giới là viết tắt của tổ chức nào?", opts: ["Quỹ Tiền tệ Quốc tế", "Quốc tế Cộng sản (Quốc tế III)", "Hiệp hội các quốc gia Đông Nam Á", "Liên hợp quốc"], ans: 1, exp: "Quốc tế III là yếu tố trong bối cảnh quốc tế được liệt kê." },
+            { id: 27, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Sau khi Pháp xâm lược, Việt Nam trở thành nước như thế nào?", opts: ["Nước đế quốc", "Nước thuộc địa", "Nước công nghiệp phát triển", "Nước đã thống nhất theo thể chế cộng hòa"], ans: 1, exp: "Slide 4 ghi Pháp xâm lược làm Việt Nam trở thành thuộc địa." },
+            { id: 28, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Những giai cấp cũ trong xã hội Việt Nam được liệt kê là gì?", opts: ["Địa chủ và nông dân", "Tư sản và tiểu tư sản", "Tiểu tư sản và công nhân", "Công nhân và tư sản"], ans: 0, exp: "Slide 4 phân loại địa chủ và nông dân là giai cấp cũ." },
+            { id: 29, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Những giai cấp mới xuất hiện trong xã hội Việt Nam là gì?", opts: ["Chỉ quý tộc và nông nô", "Chỉ địa chủ và nông dân", "Chỉ vua và quan lại", "Tư sản, tiểu tư sản và công nhân"], ans: 3, exp: "Slide 4 liệt kê ba lực lượng xã hội mới." },
+            { id: 30, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Theo slide 4, giai cấp nào dần trưởng thành để trở thành giai cấp lãnh đạo cách mạng?", opts: ["Giai cấp công nhân", "Giai cấp địa chủ", "Giai cấp tư sản mại bản", "Tầng lớp quý tộc phong kiến"], ans: 0, exp: "Slide 4 nhấn mạnh sự trưởng thành chính trị của giai cấp công nhân." },
+            { id: 31, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Cuộc bãi công Ba Son năm 1925 đánh dấu điều gì?", opts: ["Việt Nam đã giành độc lập hoàn toàn", "Phong trào công nhân chuyển sang đấu tranh tự giác", "Đảng Cộng sản Việt Nam đã được thành lập", "Chiến tranh chống Pháp kết thúc"], ans: 1, exp: "Theo slide 4, Ba Son là dấu mốc về tính tự giác của phong trào công nhân." },
+            { id: 32, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Hai loại mâu thuẫn xã hội sâu sắc trong bối cảnh thuộc địa được nêu là gì?", opts: ["Chỉ mâu thuẫn giữa các nước phương Tây", "Mâu thuẫn trong nội bộ Quốc tế III", "Mâu thuẫn dân tộc và mâu thuẫn giai cấp", "Mâu thuẫn giữa các tỉnh và thành phố"], ans: 2, exp: "Slide 4 nêu cả mâu thuẫn dân tộc và giai cấp." },
+            { id: 33, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Mâu thuẫn nào được xác định là chủ yếu, gay gắt nhất?", opts: ["Mâu thuẫn vùng miền", "Mâu thuẫn giữa các phương pháp nghiên cứu", "Mâu thuẫn dân tộc", "Mâu thuẫn giữa các nhóm trí thức"], ans: 2, exp: "Theo slide 4, mâu thuẫn dân tộc nổi bật nhất." },
+            { id: 34, slide: 4, topic: "Slide 04 — Bối cảnh ra đời của Đảng", q: "Các phong trào yêu nước sôi nổi nhưng thất bại dẫn đến tình trạng nào?", opts: ["Thực dân Pháp tự rút khỏi Việt Nam", "Đất nước đã độc lập", "Tất cả mâu thuẫn xã hội chấm dứt", "Khủng hoảng về đường lối cứu nước"], ans: 3, exp: "Slide 4 dẫn tới nhận định về khủng hoảng đường lối cứu nước." },
+
+            // Slide 05
+            { id: 35, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Ngày Nguyễn Tất Thành ra đi tìm đường cứu nước được nêu là ngày nào?", opts: ["3/2/1930", "19/12/1946", "2/9/1945", "5/6/1911"], ans: 3, exp: "Slide 5 ghi mốc 5/6/1911." },
+            { id: 36, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Tên gọi được ghi gắn với sự kiện ngày 5/6/1911 là gì?", opts: ["Lê Hồng Phong", "Văn Ba", "Nguyễn Hữu Thọ", "Trường Chinh"], ans: 1, exp: "Slide 5 nêu tên Văn Ba." },
+            { id: 37, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Văn kiện Nguyễn Ái Quốc gửi tới Hội nghị Véc-xây là gì?", opts: ["Bản Yêu sách của nhân dân An Nam", "Hiệp định Giơ-ne-vơ", "Luận cương chính trị tháng 10/1930", "Chỉ thị Toàn dân kháng chiến"], ans: 0, exp: "Slide 5 liệt kê Bản Yêu sách của nhân dân An Nam." },
+            { id: 38, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Tháng 7/1920, Nguyễn Ái Quốc đọc tài liệu nào?", opts: ["Tác phẩm Kháng chiến nhất định thắng lợi", "Sơ thảo lần thứ nhất Luận cương của Lênin về vấn đề dân tộc và thuộc địa", "Tuyên ngôn Độc lập năm 1945", "Đề cương văn hóa Việt Nam"], ans: 1, exp: "Slide 5 nhắc đến văn kiện của Lênin về dân tộc và thuộc địa." },
+            { id: 39, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Ý nghĩa của sự kiện tháng 7/1920 đối với Nguyễn Ái Quốc là gì?", opts: ["Kết thúc kháng chiến chống Pháp", "Thành lập nước Việt Nam Dân chủ Cộng hòa", "Khởi xướng công cuộc Đổi mới", "Tìm ra con đường cứu nước"], ans: 3, exp: "Theo slide 5, đây là bước tìm ra hướng cứu nước." },
+            { id: 40, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Tháng 12/1920, Nguyễn Ái Quốc bỏ phiếu tán thành tổ chức quốc tế nào?", opts: ["Liên minh châu Âu", "ASEAN", "Liên hợp quốc", "Quốc tế III"], ans: 3, exp: "Slide 5 nêu sự lựa chọn Quốc tế III." },
+            { id: 41, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Tháng 12/1920, Nguyễn Ái Quốc tham gia sáng lập đảng nào?", opts: ["Đảng Cộng sản Pháp", "Đảng Lao động Việt Nam", "Đảng Cộng sản Việt Nam", "Đảng Dân chủ Việt Nam"], ans: 0, exp: "Theo slide 5, Người tham gia thành lập Đảng Cộng sản Pháp." },
+            { id: 42, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Sự kiện tháng 12/1920 đánh dấu bước chuyển quan trọng nào?", opts: ["Từ nhà sử học thành nhà khoa học tự nhiên", "Từ nông dân thành chủ doanh nghiệp", "Từ người yêu nước thành chiến sĩ cộng sản", "Từ quân nhân thành nhà ngoại giao"], ans: 2, exp: "Slide 5 xem đây là bước ngoặt trong lập trường cách mạng." },
+            { id: 43, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Hoạt động của Nguyễn Ái Quốc mở đường giải quyết cuộc khủng hoảng gì?", opts: ["Khủng hoảng đường lối của cách mạng Việt Nam", "Khủng hoảng thương mại năm 2008", "Khủng hoảng lương thực năm 1986", "Khủng hoảng năng lượng thế giới"], ans: 0, exp: "Slide 5 liên hệ hoạt động tìm đường cứu nước với khủng hoảng đường lối." },
+            { id: 44, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Năm 1925, Nguyễn Ái Quốc thành lập tổ chức nào?", opts: ["Hội Việt Nam Cách mạng Thanh niên", "Mặt trận Dân tộc giải phóng miền Nam", "Mặt trận Liên Việt", "Đội Việt Nam Tuyên truyền Giải phóng quân"], ans: 0, exp: "Slide 5 ghi Hội Việt Nam Cách mạng Thanh niên." },
+            { id: 45, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Hội Việt Nam Cách mạng Thanh niên ra đời tại đâu?", opts: ["Quảng Châu, Trung Quốc", "Hà Nội, Việt Nam", "Paris, Pháp", "Mát-xcơ-va, Liên Xô"], ans: 0, exp: "Theo slide 5, địa điểm thành lập là Quảng Châu." },
+            { id: 46, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Tên tờ báo được gắn với hoạt động của Hội Việt Nam Cách mạng Thanh niên là gì?", opts: ["Báo Lao Động", "Báo Cứu Quốc", "Báo Thanh niên", "Báo Nhân Dân"], ans: 2, exp: "Slide 5 ghi Báo Thanh niên." },
+            { id: 47, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Tác phẩm nào của Nguyễn Ái Quốc được slide 5 nhắc đến?", opts: ["Đường Cách Mệnh", "Nhật ký trong tù", "Kháng chiến nhất định thắng lợi", "Sửa đổi lối làm việc"], ans: 0, exp: "Slide 5 nhắc đến tác phẩm Đường Cách Mệnh." },
+            { id: 48, slide: 5, topic: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", q: "Theo mốc ghi trong slide 5, phong trào “Vô sản hóa” gắn với năm nào?", opts: ["1929", "1945", "1954", "1911"], ans: 0, exp: "Mốc 1929 được giữ nguyên theo slide ôn tập." },
+
+            // Slide 06
+            { id: 49, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Năm 1929 xuất hiện bao nhiêu tổ chức cộng sản ở Việt Nam?", opts: ["Ba tổ chức", "Một tổ chức", "Hai tổ chức", "Bốn tổ chức"], ans: 0, exp: "Slide 6 nêu ba tổ chức cộng sản xuất hiện năm 1929." },
+            { id: 50, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Đông Dương Cộng sản Đảng thành lập vào thời điểm nào theo slide?", opts: ["Tháng 6/1929", "Tháng 2/1930", "Tháng 9/1945", "Tháng 7/1936"], ans: 0, exp: "Slide 6 ghi 6/1929." },
+            { id: 51, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Tổ chức nào dưới đây là một trong ba tổ chức cộng sản năm 1929?", opts: ["Mặt trận Liên Việt", "An Nam Cộng sản Đảng", "Mặt trận Việt Minh", "Đảng Lao động Việt Nam"], ans: 1, exp: "An Nam Cộng sản Đảng được liệt kê cùng hai tổ chức khác." },
+            { id: 52, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Tổ chức nào sau đây cũng thuộc ba tổ chức cộng sản năm 1929?", opts: ["Trung ương Cục miền Nam", "Hội Văn hóa Cứu quốc", "Hội Liên hiệp quốc dân Việt Nam", "Đông Dương Cộng sản Liên đoàn"], ans: 3, exp: "Slide 6 nêu Đông Dương Cộng sản Liên đoàn." },
+            { id: 53, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Sự ra đời của ba tổ chức cộng sản có ý nghĩa trực tiếp gì?", opts: ["Khép lại chiến tranh Đông Dương", "Hoàn thành thống nhất đất nước về nhà nước", "Chuẩn bị trực tiếp cho thành lập Đảng Cộng sản Việt Nam", "Đưa Việt Nam gia nhập ASEAN"], ans: 2, exp: "Slide 6 xác định đây là bước chuẩn bị trực tiếp." },
+            { id: 54, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Hội nghị hợp nhất các tổ chức cộng sản đầu năm 1930 diễn ra tại đâu?", opts: ["Hồng Kông", "Sài Gòn", "Hà Nội", "Huế"], ans: 0, exp: "Địa điểm ghi trong slide 6 là Hồng Kông." },
+            { id: 55, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Ai chủ trì Hội nghị hợp nhất các tổ chức cộng sản đầu năm 1930?", opts: ["Nguyễn Ái Quốc", "Lê Hồng Phong", "Trường Chinh", "Nguyễn Hữu Thọ"], ans: 0, exp: "Slide 6 nêu Nguyễn Ái Quốc chủ trì." },
+            { id: 56, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Hội nghị hợp nhất đầu năm 1930 đánh dấu sự kiện nào?", opts: ["Đảng Cộng sản Việt Nam ra đời", "Khởi nghĩa Nam Kỳ", "Đại hội Đảng lần thứ II", "Tổng khởi nghĩa Tháng Tám"], ans: 0, exp: "Slide 6 trực tiếp liên hệ Hội nghị hợp nhất với sự ra đời của Đảng." },
+            { id: 57, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Văn kiện nào được thông qua tại Hội nghị hợp nhất?", opts: ["Chánh cương vắn tắt của Đảng", "Đề cương văn hóa Việt Nam", "Hiệp định Pa-ri", "Nghị quyết Trung ương 21"], ans: 0, exp: "Chánh cương vắn tắt là một trong các văn kiện được liệt kê." },
+            { id: 58, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Văn kiện nào sau đây cũng được thông qua tại Hội nghị hợp nhất?", opts: ["Cương lĩnh năm 2011", "Sách lược vắn tắt của Đảng", "Hiến pháp năm 1946", "Hiệp định Giơ-ne-vơ"], ans: 1, exp: "Sách lược vắn tắt cùng Chánh cương vắn tắt thuộc nhóm văn kiện hội nghị." },
+            { id: 59, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Cặp văn kiện nào được slide 6 nêu thêm bên cạnh Chánh cương và Sách lược vắn tắt?", opts: ["Chương trình tóm tắt và Điều lệ vắn tắt", "Hiệp định Sơ bộ và Tạm ước", "Nghị quyết 15 và Nghị quyết 21", "Cương lĩnh ruộng đất và Hiến pháp"], ans: 0, exp: "Slide 6 liệt kê Chương trình tóm tắt và Điều lệ vắn tắt." },
+            { id: 60, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Theo cách khái quát trong slide 6, sự ra đời của Đảng gắn với sự kết hợp của những yếu tố nào?", opts: ["Phong trào công nhân, phong trào yêu nước và chủ nghĩa Mác – Lênin", "Chỉ phong trào nông dân và phong trào văn hóa", "Chỉ tư tưởng tư sản và phong trào địa chủ", "Chỉ các tổ chức quốc tế"], ans: 0, exp: "Slide 6 nhấn mạnh sự kết hợp các phong trào trong nước và lý luận cách mạng." },
+            { id: 61, slide: 6, topic: "Slide 06 — Ba tổ chức cộng sản và thành lập Đảng", q: "Ý nghĩa về lực lượng của việc Đảng ra đời được slide 6 nhấn mạnh là gì?", opts: ["Thống nhất lực lượng yêu nước theo đường lối vô sản", "Chấm dứt mọi hoạt động cách mạng", "Làm tan rã hoàn toàn mọi lực lượng yêu nước", "Chỉ tập hợp giới địa chủ"], ans: 0, exp: "Slide 6 nêu việc thống nhất lực lượng yêu nước theo đường lối vô sản." },
+
+            // Slide 07
+            { id: 62, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Tư tưởng cốt lõi của Cương lĩnh chính trị đầu tiên được nêu là gì?", opts: ["Hội nhập kinh tế quốc tế", "Độc lập, tự do", "Tự do thương mại", "Tăng trưởng và xuất khẩu"], ans: 1, exp: "Slide 7 đặt nhấn mạnh tư tưởng “độc lập, tự do”." },
+            { id: 63, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Mục tiêu chiến lược của Cương lĩnh chính trị đầu tiên là gì?", opts: ["Chỉ phát triển công nghiệp nhẹ", "Chỉ cải cách hành chính", "Xây dựng kinh tế thị trường ngay lập tức", "Làm tư sản dân quyền cách mạng và thổ địa cách mạng để đi tới xã hội cộng sản"], ans: 3, exp: "Slide 7 nêu mục tiêu chiến lược theo hai giai đoạn cách mạng." },
+            { id: 64, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Nhiệm vụ hàng đầu trong Cương lĩnh chính trị được nêu là gì?", opts: ["Chỉ xây dựng hệ thống giao thông", "Chỉ phát triển giáo dục phổ thông", "Đánh đổ đế quốc Pháp và các thế lực phản cách mạng để giành độc lập", "Chỉ thực hiện cải cách ruộng đất"], ans: 2, exp: "Slide 7 nhấn mạnh nhiệm vụ giành độc lập dân tộc." },
+            { id: 65, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Ai giữ vai trò lãnh đạo cách mạng theo Cương lĩnh chính trị?", opts: ["Địa chủ phong kiến", "Đảng Cộng sản - đội tiên phong của giai cấp công nhân", "Một tổ chức thương mại", "Chính quyền thực dân"], ans: 1, exp: "Slide 7 xác định vai trò lãnh đạo của Đảng Cộng sản." },
+            { id: 66, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Cương lĩnh chính trị xác định lực lượng cách mạng theo cách khái quát nào?", opts: ["Chỉ nông dân", "Toàn dân", "Chỉ công nhân", "Chỉ lực lượng nước ngoài"], ans: 1, exp: "Slide 7 nêu lực lượng toàn dân." },
+            { id: 67, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Phương pháp cách mạng theo Cương lĩnh được slide 7 xác định là gì?", opts: ["Không tiến hành đấu tranh", "Chỉ thương lượng kinh tế", "Chỉ tuyên truyền thương mại", "Bạo lực cách mạng"], ans: 3, exp: "Slide 7 ghi phương pháp bạo lực cách mạng." },
+            { id: 68, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Cương lĩnh đặt cách mạng Việt Nam trong mối quan hệ nào?", opts: ["Chỉ thuộc khu vực châu Âu", "Chỉ liên quan đến địa phương", "Là một bộ phận của cách mạng thế giới", "Hoàn toàn tách rời thế giới"], ans: 2, exp: "Slide 7 nêu tính liên hệ với cách mạng thế giới." },
+            { id: 69, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Theo slide 7, Chánh cương thiên về nội dung nào?", opts: ["Cách tính ngân sách", "Các thủ tục bầu cử", "Các bước tổ chức hậu cần", "Chiến lược"], ans: 3, exp: "Slide 7 phân biệt Chánh cương thiên về chiến lược." },
+            { id: 70, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Theo slide 7, Sách lược thiên về nội dung nào?", opts: ["Tính chất địa lý", "Phương pháp đấu tranh cụ thể", "Chỉ mục tiêu dài hạn", "Quy định tài chính của Nhà nước"], ans: 1, exp: "Slide 7 đối chiếu Sách lược với Chánh cương qua trọng tâm phương pháp." },
+            { id: 71, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Luận cương chính trị xác định phương hướng cách mạng là gì?", opts: ["Chỉ cải cách tài chính", "Cách mạng tư sản dân quyền tiến lên xã hội cộng sản, bỏ qua giai đoạn tư bản chủ nghĩa", "Chỉ cách mạng công nghiệp", "Chỉ mở rộng thương mại quốc tế"], ans: 1, exp: "Slide 7 mô tả phương hướng cách mạng của Luận cương." },
+            { id: 72, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Hai nhiệm vụ trong Luận cương chính trị là gì?", opts: ["Phát triển nông nghiệp và thương mại", "Chỉ chống phát xít và phản động thuộc địa", "Đánh đổ phong kiến và đế quốc", "Xây dựng đô thị và phát triển du lịch"], ans: 2, exp: "Slide 7 nêu nhiệm vụ chống phong kiến và đế quốc." },
+            { id: 73, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Luận cương chính trị chủ yếu xác định lực lượng cách mạng nào?", opts: ["Chỉ các lực lượng quốc tế", "Công nhân và nông dân", "Chỉ tư sản dân tộc", "Chỉ trí thức và nghệ sĩ"], ans: 1, exp: "Slide 7 nêu công nhân và nông dân là lực lượng cách mạng." },
+            { id: 74, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Phương pháp đấu tranh theo Luận cương chính trị là gì?", opts: ["Vũ trang bạo động", "Chỉ phát triển giáo dục", "Chỉ ký hiệp định kinh tế", "Chỉ vận động bầu cử nghị viện"], ans: 0, exp: "Slide 7 ghi vũ trang bạo động." },
+            { id: 75, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Luận cương chính trị nhấn mạnh vấn đề nào là “cái cốt” của cách mạng tư sản dân quyền?", opts: ["Vấn đề thổ địa", "Vấn đề thuế xuất khẩu", "Vấn đề đô thị hóa", "Vấn đề ngoại giao kinh tế"], ans: 0, exp: "Slide 7 dùng chính cụm “vấn đề thổ địa là cái cốt”." },
+            { id: 76, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Điểm giống nhau được slide 7 nêu giữa Cương lĩnh và Luận cương là gì?", opts: ["Đều xác định tiến trình từ cách mạng tư sản dân quyền hướng tới xã hội xã hội chủ nghĩa/cộng sản", "Đều tách cách mạng Việt Nam khỏi thế giới", "Đều chỉ đề cao phát triển thương mại", "Đều phủ nhận đấu tranh cách mạng"], ans: 0, exp: "Slide 7 nhấn mạnh định hướng cách mạng tư sản dân quyền tiến lên chủ nghĩa xã hội." },
+            { id: 77, slide: 7, topic: "Slide 07 — Cương lĩnh đầu tiên và Luận cương", q: "Khác biệt về lực lượng giữa hai văn kiện được slide 7 thể hiện như thế nào?", opts: ["Cả hai chỉ nêu địa chủ phong kiến", "Cả hai chỉ nêu tư sản", "Cương lĩnh nêu toàn dân; Luận cương nhấn mạnh công nhân và nông dân", "Cương lĩnh chỉ nêu địa chủ; Luận cương nêu toàn dân"], ans: 2, exp: "Đây là một điểm so sánh trực tiếp từ hai cụm nội dung trên slide." },
+
+            // Slide 08
+            { id: 78, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Đỉnh cao của phong trào cách mạng 1930–1931 là gì?", opts: ["Xô viết Nghệ - Tĩnh", "Tổng tiến công Mậu Thân", "Phong trào Đồng Khởi", "Chiến dịch Điện Biên Phủ"], ans: 0, exp: "Slide 8 xác định Xô viết Nghệ - Tĩnh là đỉnh cao." },
+            { id: 79, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Phong trào Xô viết Nghệ - Tĩnh gắn với hai tỉnh nào?", opts: ["Cao Bằng và Lạng Sơn", "Hà Nội và Hải Phòng", "Nghệ An và Hà Tĩnh", "Quảng Nam và Đà Nẵng"], ans: 2, exp: "Hai địa phương được ghi rõ trên slide 8." },
+            { id: 80, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Ngày 1/5/1930 gắn với hoạt động nào theo slide?", opts: ["Kỷ niệm Ngày Quốc tế Lao động lần đầu tiên", "Ký Hiệp định Giơ-ne-vơ", "Đại hội II của Đảng", "Thành lập nước Việt Nam Dân chủ Cộng hòa"], ans: 0, exp: "Slide 8 nhắc tới việc kỷ niệm Quốc tế Lao động." },
+            { id: 81, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Bài học được rút ra từ phong trào 1930–1931 là gì?", opts: ["Kết hợp nhiệm vụ phản đế và phản phong", "Chỉ thực hiện nhiệm vụ kinh tế", "Tách đấu tranh dân tộc khỏi đấu tranh xã hội", "Chỉ vận động ngoại giao"], ans: 0, exp: "Slide 8 nêu bài học kết hợp phản đế và phản phong." },
+            { id: 82, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Hội nghị Trung ương Đảng tháng 7/1936 diễn ra tại đâu?", opts: ["Hồng Kông", "Việt Bắc", "Tân Trào", "Thượng Hải"], ans: 3, exp: "Theo slide 8, Hội nghị tháng 7/1936 được tổ chức tại Thượng Hải." },
+            { id: 83, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Ai chủ trì Hội nghị tháng 7/1936 theo slide?", opts: ["Hồ Chí Minh", "Lê Hồng Phong", "Nguyễn Hữu Thọ", "Võ Nguyên Giáp"], ans: 1, exp: "Slide 8 nêu đồng chí Lê Hồng Phong chủ trì." },
+            { id: 84, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Yêu cầu cấp thiết trước mắt của nhân dân Đông Dương thời kỳ 1936–1939 là gì?", opts: ["Thành lập Liên Việt", "Thống nhất đất nước sau 1975", "Đổi mới kinh tế từ năm 1986", "Tự do, dân chủ, cải thiện đời sống"], ans: 3, exp: "Slide 8 xác định nhu cầu dân sinh, dân chủ trước mắt." },
+            { id: 85, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Nhiệm vụ đấu tranh chủ yếu trong phong trào 1936–1939 là gì?", opts: ["Chỉ đấu tranh bầu cử Quốc hội năm 1946", "Chỉ xây dựng chủ nghĩa xã hội miền Bắc", "Chỉ chống phát triển công nghiệp", "Chống phát xít, phản động thuộc địa; đòi dân chủ, cơm áo, hòa bình"], ans: 3, exp: "Slide 8 đặt trọng tâm vào chống phát xít và các quyền dân sinh dân chủ." },
+            { id: 86, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Kẻ thù trực tiếp trong thời kỳ 1936–1939 được xác định là ai?", opts: ["Bọn phản động thuộc địa và tay sai", "Quân Mỹ ở miền Nam giai đoạn 1965–1973", "Phát xít Nhật sau đầu hàng", "Các nước xã hội chủ nghĩa"], ans: 0, exp: "Slide 8 nêu kẻ thù phản động thuộc địa và tay sai." },
+            { id: 87, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Vì sao Đảng có thể đưa một số cán bộ ra hoạt động công khai giai đoạn 1936–1939?", opts: ["Chính phủ Pháp thực hiện một số chính sách tiến bộ ở thuộc địa", "Việt Nam đã hoàn toàn độc lập", "Chiến tranh Đông Dương đã kết thúc", "Đảng không còn cần hoạt động bí mật"], ans: 0, exp: "Slide 8 gắn hoạt động công khai với điều kiện chính trị do chính sách của Pháp." },
+            { id: 88, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Điểm mới về phương thức đấu tranh trong giai đoạn 1936–1939 là gì?", opts: ["Chỉ kiến nghị kinh tế", "Chỉ đấu tranh vũ trang", "Chỉ bí mật, tuyệt đối không công khai", "Kết hợp hợp pháp và nửa hợp pháp, công khai và bí mật"], ans: 3, exp: "Slide 8 đề cao sự linh hoạt trong hình thức đấu tranh." },
+            { id: 89, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Văn kiện tháng 10/1936 mang tên gì?", opts: ["Chánh cương vắn tắt", "Chung quanh vấn đề chiến sách mới", "Kháng chiến nhất định thắng lợi", "Đường Cách Mệnh"], ans: 1, exp: "Slide 8 ghi văn kiện “Chung quanh vấn đề chiến sách mới”." },
+            { id: 90, slide: 8, topic: "Slide 08 — Phong trào cách mạng 1930–1939", q: "Ý nghĩa của văn kiện “Chung quanh vấn đề chiến sách mới” là gì?", opts: ["Mở đầu thời kỳ Đổi mới 1986", "Ban hành Hiến pháp đầu tiên", "Phê phán quan điểm chưa đúng, bước đầu khắc phục hạn chế của Luận cương", "Tuyên bố kết thúc chiến tranh chống Pháp"], ans: 2, exp: "Theo slide 8, văn kiện là bước điều chỉnh nhận thức và sách lược." },
+
+            // Slide 09
+            { id: 91, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Chuyển hướng chỉ đạo chiến lược giai đoạn 1939–1945 được thực hiện thông qua các Hội nghị Trung ương nào?", opts: ["Hội nghị 15 và 21", "Đại hội IV, V và VI", "Hội nghị 11, 12 và 13", "Hội nghị 6, 7 và 8"], ans: 3, exp: "Slide 9 nêu quá trình chuyển hướng qua các Hội nghị Trung ương 6, 7, 8." },
+            { id: 92, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Hội nghị nào mở đầu quá trình chuyển hướng chỉ đạo chiến lược?", opts: ["Hội nghị Trung ương 6", "Đại hội III", "Hội nghị Trung ương 15", "Hội nghị Trung ương 8"], ans: 0, exp: "Slide 9 ghi “mở đầu Hội nghị 6”." },
+            { id: 93, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Hội nghị nào hoàn chỉnh chuyển hướng chỉ đạo chiến lược?", opts: ["Hội nghị Trung ương 8", "Hội nghị Trung ương 21", "Đại hội Đảng lần thứ II", "Hội nghị Trung ương 6"], ans: 0, exp: "Slide 9 ghi “hoàn chỉnh Hội nghị 8”." },
+            { id: 94, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Nhiệm vụ được xác định là hàng đầu sau chuyển hướng chiến lược là gì?", opts: ["Đổi mới kinh tế toàn diện", "Cải cách hành chính trước hết", "Phát triển xuất khẩu", "Giải phóng dân tộc"], ans: 3, exp: "Nhiệm vụ giải phóng dân tộc được đặt lên trên hết." },
+            { id: 95, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Điểm nổi bật trong chuyển hướng chiến lược 1939–1945 thể hiện năng lực gì của Đảng?", opts: ["Tách đường lối khỏi bối cảnh", "Chỉ duy trì một phương thức bất biến", "Nhạy bén và linh hoạt phù hợp thực tiễn", "Không thay đổi nhiệm vụ cách mạng"], ans: 2, exp: "Slide 9 đánh giá sự chuyển hướng là nhạy bén và linh hoạt." },
+            { id: 96, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Điểm khác biệt cơ bản giữa Hội nghị 6 và Hội nghị 8 được slide 9 nêu là gì?", opts: ["Giải quyết vấn đề giải phóng dân tộc trong phạm vi từng nước", "Chuyển trọng tâm sang xuất khẩu", "Chấm dứt mọi hình thức mặt trận", "Chỉ đổi tên Đảng"], ans: 0, exp: "Slide 9 nhấn mạnh giải phóng dân tộc trong phạm vi từng quốc gia." },
+            { id: 97, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Hội nghị Trung ương 8 xác định nhiệm vụ số một của cách mạng Việt Nam là gì?", opts: ["Giải phóng dân tộc", "Hội nhập thương mại", "Xây dựng hiến pháp mới", "Công nghiệp hóa đất nước"], ans: 0, exp: "Slide 9 nêu rõ nhiệm vụ số một là giải phóng dân tộc." },
+            { id: 98, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Mặt trận nào được nhấn mạnh trong chủ trương của Hội nghị Trung ương 8?", opts: ["Mặt trận Tổ quốc thời kỳ Đổi mới", "Mặt trận Liên Việt", "Việt Minh", "Quốc tế III"], ans: 2, exp: "Slide 9 xem Việt Minh là hình thức tập hợp lực lượng dân tộc rộng rãi." },
+            { id: 99, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Mục đích của Mặt trận Việt Minh trong giai đoạn này là gì?", opts: ["Chỉ tổ chức hoạt động kinh tế", "Chỉ tập hợp một giai cấp", "Tập hợp rộng rãi các lực lượng dân tộc", "Thay thế hoàn toàn chính quyền cách mạng"], ans: 2, exp: "Mặt trận Việt Minh nhằm đoàn kết các lực lượng yêu nước." },
+            { id: 100, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Các đoàn thể thuộc Việt Minh thường mang tên gọi gì?", opts: ["Thương mại", "Cứu quốc", "Tự trị", "Phản chiến"], ans: 1, exp: "Slide 9 ghi các tổ chức, đoàn thể mang tên Cứu quốc." },
+            { id: 101, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Sự kiện nào gắn với sự xuất hiện của lá cờ đỏ sao vàng theo slide 9?", opts: ["Chiến dịch Biên giới 1950", "Đại hội Đảng lần thứ II", "Phong trào Đồng Khởi", "Khởi nghĩa Nam Kỳ"], ans: 3, exp: "Slide 9 liên hệ cờ đỏ sao vàng với Khởi nghĩa Nam Kỳ." },
+            { id: 102, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Để tập hợp giai cấp tư sản, tổ chức nào được thành lập theo slide 9?", opts: ["Đảng Dân chủ Việt Nam", "Mặt trận Liên Việt", "Trung ương Cục miền Nam", "Đội Việt Nam Tuyên truyền Giải phóng quân"], ans: 0, exp: "Slide 9 ghi việc thành lập Đảng Dân chủ Việt Nam để tập hợp giai cấp tư sản." },
+            { id: 103, slide: 9, topic: "Slide 09 — Chuyển hướng chiến lược 1939–1945", q: "Tổ chức nào được nêu nhằm tập hợp văn nghệ sĩ?", opts: ["Hội Văn hóa Cứu quốc", "Hội Liên hiệp quốc dân Việt Nam", "Nha Bình dân học vụ", "Hội Việt Nam Cách mạng Thanh niên"], ans: 0, exp: "Slide 9 nêu Hội Văn hóa Cứu quốc." },
+
+            // Slide 10
+            { id: 104, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Ba nguyên tắc của nền văn hóa mới trong Đề cương văn hóa Việt Nam là gì?", opts: ["Dân tộc, khoa học, đại chúng", "Dân chủ, công bằng, văn minh", "Độc lập, tự do, hạnh phúc", "Toàn dân, toàn diện, trường kỳ"], ans: 0, exp: "Slide 10 nêu bộ ba nguyên tắc “dân tộc, khoa học, đại chúng”." },
+            { id: 105, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Đề cương văn hóa Việt Nam nêu chủ trương chủ yếu gì?", opts: ["Xóa bỏ mọi hoạt động nghệ thuật", "Chỉ phát triển văn hóa cung đình", "Chỉ đào tạo cán bộ quân sự", "Xây dựng một nền văn hóa mới"], ans: 3, exp: "Slide 10 đặt mục tiêu xây dựng nền văn hóa mới." },
+            { id: 106, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Ngày thành lập Đội Việt Nam Tuyên truyền Giải phóng quân là khi nào?", opts: ["2/9/1945", "22/12/1944", "6/1/1946", "19/12/1946"], ans: 1, exp: "Slide 10 ghi rõ 22/12/1944." },
+            { id: 107, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Lực lượng vũ trang nào được thành lập ngày 22/12/1944?", opts: ["Trung ương Cục miền Nam", "Đội Việt Nam Tuyên truyền Giải phóng quân", "Mặt trận Liên Việt", "Hội Văn hóa Cứu quốc"], ans: 1, exp: "Đơn vị được nêu ở slide 10 là Đội Việt Nam Tuyên truyền Giải phóng quân." },
+            { id: 108, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Chỉ thị thành lập Đội Việt Nam Tuyên truyền Giải phóng quân được đánh giá như thế nào?", opts: ["Hiệp định chấm dứt chiến tranh", "Văn kiện khai sinh Quốc hội khóa I", "Một văn kiện mang tính chất cương lĩnh quân sự đầu tiên của Đảng", "Văn kiện đầu tiên về Đổi mới kinh tế"], ans: 2, exp: "Slide 10 ghi đánh giá về tính chất cương lĩnh quân sự." },
+            { id: 109, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Phong trào khởi nghĩa từng phần giai đoạn 1944–1945 có ý nghĩa gì?", opts: ["Thành lập nước Việt Nam thống nhất sau 1975", "Kết thúc kháng chiến chống Mỹ", "Mở đầu chính sách Đổi mới", "Tạo tiền đề thực tiễn và lực lượng cho Tổng khởi nghĩa"], ans: 3, exp: "Khởi nghĩa từng phần chuẩn bị lực lượng, kinh nghiệm và thời cơ cho tổng khởi nghĩa." },
+            { id: 110, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Mối quan hệ giữa khởi nghĩa từng phần và Tổng khởi nghĩa được thể hiện ra sao?", opts: ["Hai quá trình hoàn toàn không liên hệ", "Khởi nghĩa từng phần chỉ là hoạt động đối ngoại", "Tổng khởi nghĩa diễn ra trước khởi nghĩa từng phần", "Khởi nghĩa từng phần là bước chuẩn bị cho Tổng khởi nghĩa"], ans: 3, exp: "Slide 10 coi khởi nghĩa từng phần là quá trình tạo tiền đề." },
+            { id: 111, slide: 10, topic: "Slide 10 — Văn hóa, lực lượng vũ trang", q: "Tổ hợp nào đúng về chủ trương và sự chuẩn bị lực lượng giai đoạn 1944–1945?", opts: ["Chỉ đàm phán Hiệp định Pa-ri", "Chỉ tiến hành công nghiệp hóa", "Xây dựng văn hóa mới; phát triển lực lượng vũ trang; chuẩn bị Tổng khởi nghĩa", "Chỉ chú trọng hội nhập kinh tế"], ans: 2, exp: "Các ý thuộc slide 10 kết hợp chuẩn bị tư tưởng, quân sự và thực tiễn." },
+
+            // Slide 11
+            { id: 112, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Thời cơ Tổng khởi nghĩa Tháng Tám 1945 được slide 11 xác định từ lúc nào?", opts: ["Từ ngày thành lập Đảng năm 1930", "Từ khi ký Hiệp định Giơ-ne-vơ", "Từ khi bắt đầu Đổi mới năm 1986", "Từ khi Nhật tuyên bố đầu hàng Đồng minh"], ans: 3, exp: "Slide 11 xác định thời cơ mở ra khi Nhật đầu hàng Đồng minh." },
+            { id: 113, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Thời cơ Tổng khởi nghĩa được xác định kết thúc trước sự kiện nào?", opts: ["Quân Đồng minh vào Đông Dương", "Ký Hiệp định Pa-ri", "Quốc hội khóa I họp", "Hội nghị Trung ương 15"], ans: 0, exp: "Slide 11 nêu khoảng trống thời cơ trước khi quân Đồng minh tiến vào." },
+            { id: 114, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Đại hội Quốc dân Tân Trào thành lập cơ quan nào?", opts: ["Mặt trận Liên Việt", "Ủy ban Dân tộc Giải phóng Việt Nam", "Nha Bình dân học vụ", "Trung ương Cục miền Nam"], ans: 1, exp: "Slide 11 ghi cơ quan do Đại hội Quốc dân Tân Trào thành lập." },
+            { id: 115, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Ai được bầu làm Chủ tịch Ủy ban Dân tộc Giải phóng Việt Nam?", opts: ["Nguyễn Hữu Thọ", "Lê Hồng Phong", "Trường Chinh", "Hồ Chí Minh"], ans: 3, exp: "Theo slide 11, Đại hội bầu Hồ Chí Minh làm Chủ tịch." },
+            { id: 116, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Địa phương nào thuộc nhóm giành chính quyền sớm nhất trong Cách mạng Tháng Tám?", opts: ["Sài Gòn", "Bắc Giang", "Hà Nội", "Huế"], ans: 1, exp: "Slide 11 liệt kê Bắc Giang cùng Hải Dương, Hà Tĩnh, Quảng Nam." },
+            { id: 117, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Bộ bốn địa phương giành chính quyền sớm nhất theo slide 11 là gì?", opts: ["Đà Nẵng, Cần Thơ, Biên Hòa, Huế", "Cao Bằng, Lạng Sơn, Hà Giang, Sơn La", "Bắc Giang, Hải Dương, Hà Tĩnh, Quảng Nam", "Hà Nội, Hải Phòng, Huế, Sài Gòn"], ans: 2, exp: "Slide 11 liệt kê chính xác bốn địa phương này." },
+            { id: 118, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Việc Bảo Đại tuyên bố thoái vị đánh dấu điều gì?", opts: ["Sự sụp đổ của chế độ phong kiến Việt Nam", "Sự ra đời của Đảng Lao động Việt Nam", "Việc gia nhập ASEAN", "Kết thúc kháng chiến chống Mỹ"], ans: 0, exp: "Slide 11 xem thoái vị là dấu mốc chấm dứt chế độ phong kiến." },
+            { id: 119, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Ngày 2/9/1945, Hồ Chí Minh đọc văn kiện nào?", opts: ["Tuyên ngôn Độc lập", "Lời kêu gọi Toàn quốc kháng chiến", "Hiệp định Giơ-ne-vơ", "Đề cương văn hóa Việt Nam"], ans: 0, exp: "Slide 11 nêu Tuyên ngôn Độc lập." },
+            { id: 120, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Địa điểm công bố Tuyên ngôn Độc lập ngày 2/9/1945 là đâu?", opts: ["Chiến khu Việt Bắc", "Hồng Kông", "Căn cứ Tân Trào", "Quảng trường Ba Đình"], ans: 3, exp: "Slide 11 ghi Quảng trường Ba Đình." },
+            { id: 121, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Ngày 2/9/1945 khai sinh nhà nước nào?", opts: ["Liên bang Đông Dương", "Đế quốc Việt Nam", "Việt Nam Dân chủ Cộng hòa", "Cộng hòa xã hội chủ nghĩa Việt Nam"], ans: 2, exp: "Theo slide 11, nước Việt Nam Dân chủ Cộng hòa ra đời." },
+            { id: 122, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Ý nghĩa đối ngoại trực tiếp của Tuyên ngôn Độc lập là gì?", opts: ["Ký hiệp ước thương mại quốc tế", "Tuyên bố gia nhập Liên hợp quốc", "Chuyển sang kinh tế thị trường", "Khẳng định độc lập và chủ quyền dân tộc trước nhân dân và Đồng minh"], ans: 3, exp: "Slide 11 nhấn mạnh sự khẳng định chủ quyền trước nhân dân và quốc tế." },
+            { id: 123, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Tính chất của Cách mạng Tháng Tám được slide 11 nêu là gì?", opts: ["Cách mạng công nghiệp thuần túy", "Cách mạng tư sản cổ điển", "Cuộc cải cách hành chính", "Cách mạng giải phóng dân tộc mang tính chất dân chủ mới"], ans: 3, exp: "Slide 11 xác định tính chất giải phóng dân tộc và dân chủ mới." },
+            { id: 124, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Cách mạng Tháng Tám khiến Đảng Cộng sản Việt Nam trở thành gì?", opts: ["Chính đảng cầm quyền", "Một tổ chức kinh tế", "Một đoàn thể nghề nghiệp", "Một cơ quan của chính phủ Pháp"], ans: 0, exp: "Slide 11 nêu bước chuyển sang vị trí đảng cầm quyền." },
+            { id: 125, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Bài học quan trọng về xây dựng lực lượng cách mạng 1930–1945 là gì?", opts: ["Không cần xây dựng mặt trận đoàn kết", "Xây dựng mặt trận đoàn kết toàn dân, phát huy sức mạnh quần chúng", "Chỉ dựa vào một địa phương", "Chỉ dựa vào viện trợ bên ngoài"], ans: 1, exp: "Slide 11 nêu đoàn kết toàn dân là bài học cốt lõi." },
+            { id: 126, slide: 11, topic: "Slide 11 — Thắng lợi Cách mạng Tháng Tám 1945", q: "Điểm mới của Cách mạng Tháng Tám so với phong trào 1930–1931 là gì?", opts: ["Không có sự tham gia của quần chúng", "Tập hợp toàn dân, chọn đúng thời cơ và phương pháp khởi nghĩa", "Không cần lựa chọn thời cơ", "Chỉ sử dụng đấu tranh công khai"], ans: 1, exp: "Slide 11 nhấn mạnh nghệ thuật tập hợp lực lượng và nắm thời cơ." },
+
+            // Slide 12
+            { id: 127, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Ngay sau Cách mạng Tháng Tám, nước ta phải đối mặt với khó khăn nào?", opts: ["Hoàn toàn không có lực lượng nước ngoài", "Nền kinh tế dư thừa của cải", "Nạn đói, nạn dốt, ngân quỹ trống rỗng và nguy cơ ngoại xâm", "Công nghiệp hiện đại đã hoàn chỉnh"], ans: 2, exp: "Slide 12 liệt kê các thử thách chồng chất của chính quyền mới." },
+            { id: 128, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Những lực lượng Đồng minh được slide 12 nêu là gì?", opts: ["Quân Canada và quân Úc", "Quân Trung Hoa Dân quốc và quân Anh", "Quân Nhật và quân Đức", "Quân Liên Xô và quân Cuba"], ans: 1, exp: "Slide 12 nhắc quân Trung Hoa Dân quốc và quân Anh." },
+            { id: 129, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Theo Chỉ thị Kháng chiến kiến quốc, kẻ thù chính là ai?", opts: ["Quân Mỹ trong chiến tranh đặc biệt", "Thực dân Pháp xâm lược", "Các nước xã hội chủ nghĩa", "Đế quốc Nhật đã đầu hàng"], ans: 1, exp: "Slide 12 xác định thực dân Pháp xâm lược là kẻ thù chính." },
+            { id: 130, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Khẩu hiệu của Chỉ thị Kháng chiến kiến quốc là gì?", opts: ["Dân tộc trên hết, Tổ quốc trên hết", "Không có gì quý hơn độc lập, tự do", "Thần tốc, táo bạo, bất ngờ, chắc thắng", "Đánh cho Mỹ cút, đánh cho ngụy nhào"], ans: 0, exp: "Slide 12 ghi khẩu hiệu “Dân tộc trên hết, Tổ quốc trên hết”." },
+            { id: 131, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Nhiệm vụ nào thuộc bốn nhiệm vụ cấp bách được Chỉ thị Kháng chiến kiến quốc nêu?", opts: ["Củng cố chính quyền", "Mở chiến dịch Điện Biên Phủ", "Gia nhập WTO", "Khởi xướng Đổi mới"], ans: 0, exp: "Củng cố chính quyền là nhiệm vụ trước mắt trong Chỉ thị." },
+            { id: 132, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Nhóm nhiệm vụ chính trước mắt theo Chỉ thị Kháng chiến kiến quốc là gì?", opts: ["Chỉ lập kế hoạch 5 năm và phát triển xuất khẩu", "Củng cố chính quyền, chống Pháp, bài trừ nội phản, cải thiện đời sống", "Gia nhập ASEAN, WTO, EU, APEC", "Công nghiệp hóa, hiện đại hóa, toàn cầu hóa, đô thị hóa"], ans: 1, exp: "Slide 12 liệt kê bốn nhóm nhiệm vụ trên." },
+            { id: 133, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Cơ quan chuyên trách chống nạn mù chữ được thành lập là gì?", opts: ["Trung ương Cục miền Nam", "Nha Bình dân học vụ", "Ủy ban Dân tộc Giải phóng", "Mặt trận Liên Việt"], ans: 1, exp: "Slide 12 nhắc Nha Bình dân học vụ để chống giặc dốt." },
+            { id: 134, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Biện pháp về tài chính – kinh tế được nêu ở slide 12 là gì?", opts: ["Áp dụng cơ chế thị trường từ 1945", "Bỏ tiền tệ hoàn toàn", "Ban hành đồng euro", "Phát hành tiền Việt Nam"], ans: 3, exp: "Slide 12 nhắc biện pháp phát hành tiền Việt Nam bên cạnh chống đói." },
+            { id: 135, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Cuộc Tổng tuyển cử bầu Quốc hội đầu tiên diễn ra khi nào?", opts: ["2/9/1945", "22/12/1944", "6/1/1946", "19/12/1946"], ans: 2, exp: "Slide 12 ghi ngày 6/1/1946." },
+            { id: 136, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Hiến pháp đầu tiên của nước Việt Nam Dân chủ Cộng hòa được ban hành năm nào?", opts: ["1930", "1954", "1975", "1946"], ans: 3, exp: "Slide 12 ghi mốc năm 1946." },
+            { id: 137, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Ngày 11/11/1945, Đảng Cộng sản Đông Dương quyết định gì?", opts: ["Tuyên bố giải thể mọi tổ chức cách mạng", "Công khai đổi tên thành Đảng Lao động Việt Nam", "Rút vào hoạt động bí mật", "Chuyển toàn bộ hoạt động ra nước ngoài"], ans: 2, exp: "Slide 12 cho biết Đảng rút vào bí mật để giữ vai trò lãnh đạo và tránh sự tấn công." },
+            { id: 138, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Bộ phận hoạt động công khai sau ngày 11/11/1945 lấy danh nghĩa gì?", opts: ["Ủy ban Dân tộc Giải phóng", "Nha Bình dân học vụ", "Hội Nghiên cứu chủ nghĩa Mác", "Mặt trận Liên Việt"], ans: 2, exp: "Slide 12 ghi danh nghĩa Hội Nghiên cứu chủ nghĩa Mác." },
+            { id: 139, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Mục đích của việc Đảng rút vào hoạt động bí mật tháng 11/1945 là gì?", opts: ["Chỉ nhằm thay đổi biểu tượng", "Giữ vững vai trò lãnh đạo, tránh mũi nhọn tấn công của kẻ thù", "Từ bỏ vai trò lãnh đạo đất nước", "Chỉ để chuẩn bị đại hội năm 1986"], ans: 1, exp: "Slide 12 giải thích lý do chính trị và yêu cầu bảo vệ lực lượng." },
+            { id: 140, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Sách lược đối ngoại giai đoạn 9/1945–2/1946 được khái quát thế nào?", opts: ["Hòa Pháp, đuổi Tưởng", "Hòa Tưởng, đánh Pháp", "Đồng thời tuyên chiến với mọi lực lượng", "Hòa Mỹ, đánh Pháp"], ans: 1, exp: "Slide 12 nêu giai đoạn đầu “Hòa Tưởng, đánh Pháp”." },
+            { id: 141, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Ngày 23/9/1945 gắn với sự kiện nào tại Nam Bộ theo slide 12?", opts: ["Tổng tuyển cử Quốc hội", "Ký Hiệp định Giơ-ne-vơ", "Hồ Chí Minh đọc Tuyên ngôn Độc lập", "Nhân dân đứng lên kháng chiến chống thực dân Pháp xâm lược"], ans: 3, exp: "Slide 12 nêu mốc 23/9/1945 kháng chiến chống Pháp." },
+            { id: 142, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Để đối phó với Hiệp ước Hoa – Pháp, Ban Thường vụ Trung ương chọn chủ trương nào?", opts: ["Không cần đàm phán", "Chỉ chống giặc dốt", "Đánh nhanh thắng nhanh", "Hòa để tiến"], ans: 3, exp: "Slide 12 nêu quyết định “Hòa để tiến”." },
+            { id: 143, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Mục tiêu chủ yếu của sách lược “Hòa để tiến” là gì?", opts: ["Chấm dứt mọi hoạt động quân sự vô thời hạn", "Chấp nhận từ bỏ độc lập lâu dài", "Phụ thuộc hoàn toàn vào thực dân Pháp", "Tranh thủ thời gian hòa bình để chuẩn bị kháng chiến"], ans: 3, exp: "Slide 12 gắn hòa hoãn với việc tranh thủ thời gian chuẩn bị." },
+            { id: 144, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Sách lược đối ngoại giai đoạn 3/1946–12/1946 là gì?", opts: ["Hòa Mỹ, đánh Nhật", "Hòa Tưởng, đánh Pháp", "Hòa Pháp, đuổi Tưởng", "Hòa Nhật, đuổi Anh"], ans: 2, exp: "Slide 12 nêu giai đoạn sau “Hòa Pháp, đuổi Tưởng”." },
+            { id: 145, slide: 12, topic: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", q: "Mối quan hệ đúng giữa hai giai đoạn hòa hoãn năm 1945–1946 là gì?", opts: ["Chỉ liên quan đến cải cách giáo dục", "Không có bất kỳ thay đổi sách lược nào", "Chuyển từ đánh Pháp sang đánh Nhật", "Chuyển từ hòa Tưởng, đánh Pháp sang hòa Pháp, đuổi Tưởng"], ans: 3, exp: "Slide 12 mô tả sự điều chỉnh đối ngoại theo diễn biến tình hình." },
+
+            // Slide 13
+            { id: 146, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Cuộc kháng chiến toàn quốc chống thực dân Pháp bùng nổ vào ngày nào?", opts: ["2/9/1945", "19/12/1946", "6/1/1946", "7/5/1954"], ans: 1, exp: "Slide 13 ghi ngày 19/12/1946." },
+            { id: 147, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Nguyên nhân trực tiếp được nêu khiến kháng chiến toàn quốc bùng nổ là gì?", opts: ["Không thể tiếp tục thương lượng hòa bình với Pháp", "Nhật vừa tuyên bố đầu hàng", "Mỹ rút hết quân khỏi miền Nam", "Đã hoàn thành thống nhất đất nước"], ans: 0, exp: "Slide 13 mô tả bối cảnh thương lượng hòa bình không còn khả thi." },
+            { id: 148, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Ai là tác giả “Lời kêu gọi Toàn quốc kháng chiến”?", opts: ["Nguyễn Hữu Thọ", "Trường Chinh", "Lê Hồng Phong", "Hồ Chí Minh"], ans: 3, exp: "Slide 13 ghi Lời kêu gọi Toàn quốc kháng chiến (HCM)." },
+            { id: 149, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Văn kiện nào của Trung ương Đảng thể hiện đường lối kháng chiến chống Pháp?", opts: ["Chương trình tóm tắt của Đảng", "Cương lĩnh năm 2011", "Đề cương văn hóa Việt Nam", "Chỉ thị Toàn dân kháng chiến"], ans: 3, exp: "Slide 13 nêu Chỉ thị Toàn dân kháng chiến của Trung ương Đảng." },
+            { id: 150, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Ai là tác giả tác phẩm “Kháng chiến nhất định thắng lợi”?", opts: ["Hồ Chí Minh", "Nguyễn Hữu Thọ", "Trường Chinh", "Nguyễn Ái Quốc (năm 1911)"], ans: 2, exp: "Slide 13 ghi tên tác giả Trường Chinh." },
+            { id: 151, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Năm nguyên tắc/chủ trương của đường lối kháng chiến chống Pháp là gì?", opts: ["Chỉ phát triển kinh tế và thương mại", "Chỉ quân sự, ngắn hạn và hoàn toàn dựa vào bên ngoài", "Toàn dân, toàn diện, trường kỳ, tự lực cánh sinh, tranh thủ ủng hộ quốc tế", "Chỉ ngoại giao và chờ đợi"], ans: 2, exp: "Slide 13 nêu đầy đủ các yếu tố của đường lối kháng chiến." },
+            { id: 152, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Nội dung “toàn dân” trong đường lối kháng chiến nhấn mạnh điều gì?", opts: ["Huy động sức mạnh của mọi tầng lớp nhân dân", "Chỉ dựa vào viện trợ nước ngoài", "Chỉ dùng lực lượng quân đội chuyên nghiệp", "Chỉ huy động một vùng địa lý"], ans: 0, exp: "“Toàn dân” gắn với việc phát huy sức mạnh nhân dân." },
+            { id: 153, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Điểm nổi bật trong phương pháp lãnh đạo kháng chiến được nhấn mạnh là gì?", opts: ["Chỉ sử dụng hoạt động ngoại giao", "Kết hợp linh hoạt đấu tranh chính trị, quân sự và ngoại giao", "Tách rời quân sự khỏi chính trị", "Không tranh thủ sự ủng hộ quốc tế"], ans: 1, exp: "Slide 13 nêu sự kết hợp các mặt trận là điểm nổi bật." },
+            { id: 154, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Đường lối kháng chiến chống Pháp phản ánh phẩm chất nào trong chỉ đạo chiến tranh?", opts: ["Sự bị động tuyệt đối", "Không có chiến lược", "Sự phụ thuộc hoàn toàn", "Tính sáng tạo và độc lập"], ans: 3, exp: "Slide 13 đánh giá sự sáng tạo, độc lập trong chỉ đạo." },
+            { id: 155, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Cuộc chiến đấu ở các đô thị đầu kháng chiến tạo điều kiện gì?", opts: ["Cơ quan đầu não kháng chiến rút về căn cứ địa Việt Bắc", "Pháp lập tức đầu hàng", "Chính quyền cách mạng giải thể", "Đất nước thống nhất ngay"], ans: 0, exp: "Slide 13 nêu tác dụng bảo vệ việc chuyển cơ quan đầu não về Việt Bắc." },
+            { id: 156, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Trước cuộc tấn công Việt Bắc của Pháp, Đảng ban hành chỉ thị gì?", opts: ["Đánh cho Mỹ cút, đánh cho ngụy nhào", "Hòa để tiến", "Toàn dân học tập Đổi mới", "Phải phá tan cuộc tấn công mùa đông của giặc Pháp"], ans: 3, exp: "Slide 13 ghi chỉ thị phá tan cuộc tấn công mùa đông." },
+            { id: 157, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Sau thất bại ở Việt Bắc, thực dân Pháp buộc phải chuyển từ chiến lược nào sang chiến lược nào?", opts: ["Từ đàm phán sang hội nhập kinh tế", "Từ đánh lâu dài sang đánh nhanh thắng nhanh", "Từ chiến tranh sang hòa bình vĩnh viễn", "Từ đánh nhanh thắng nhanh sang đánh lâu dài"], ans: 3, exp: "Slide 13 nêu sự chuyển đổi chiến lược của Pháp." },
+            { id: 158, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Đầu năm 1950, các nước nào công nhận và đặt quan hệ ngoại giao với Việt Nam theo slide?", opts: ["Chỉ ASEAN", "Trung Quốc, Liên Xô và các nước xã hội chủ nghĩa", "Chỉ Pháp và Nhật", "Chỉ Mỹ và Anh"], ans: 1, exp: "Slide 13 nêu chuyển biến ngoại giao quan trọng đầu năm 1950." },
+            { id: 159, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Kế hoạch quân sự Pháp được slide 13 nhắc đến trước Chiến dịch Biên giới là gì?", opts: ["Kế hoạch 5 năm", "Kế hoạch Rơ-ve", "Kế hoạch Marshall", "Kế hoạch Nava"], ans: 1, exp: "Slide 13 ghi Pháp thông qua kế hoạch Rơ-ve." },
+            { id: 160, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Chiến dịch Biên giới Thu – Đông năm 1950 nhằm mục tiêu gì?", opts: ["Đổi tên Đảng Lao động Việt Nam", "Tiêu diệt sinh lực địch, khai thông biên giới Việt – Trung, mở rộng căn cứ Việt Bắc", "Giải phóng Sài Gòn", "Chỉ bảo vệ Hà Nội 12 ngày đêm"], ans: 1, exp: "Slide 13 nêu ba mục tiêu trực tiếp của Chiến dịch Biên giới." },
+            { id: 161, slide: 13, topic: "Slide 13 — Kháng chiến toàn quốc 1946–1954", q: "Thắng lợi Chiến dịch Biên giới gắn với chuyển biến chiến lược nào?", opts: ["Chỉ chuyển trọng tâm sang cải cách giáo dục", "Tạo thế chuyển từ phòng ngự sang phản công", "Ngừng hoàn toàn chiến đấu", "Từ phản công sang rút quân toàn bộ"], ans: 1, exp: "Slide 13 nhấn mạnh chuyển thế chiến lược trong giai đoạn 1950–1954." },
+
+            // Slide 14
+            { id: 162, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Đại hội đại biểu toàn quốc lần thứ II của Đảng diễn ra vào thời gian nào?", opts: ["Tháng 2/1930", "Tháng 2/1951", "Tháng 12/1986", "Tháng 1/1959"], ans: 1, exp: "Slide 14 ghi Đại hội II tháng 2/1951." },
+            { id: 163, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Đại hội II quyết định đưa Đảng ra hoạt động công khai với tên gọi gì?", opts: ["Đảng Dân chủ Việt Nam", "Đông Dương Cộng sản Đảng", "Đảng Lao động Việt Nam", "Đảng Cộng sản Pháp"], ans: 2, exp: "Slide 14 ghi tên gọi Đảng Lao động Việt Nam." },
+            { id: 164, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Nhiệm vụ chính được Đại hội II xác định là gì?", opts: ["Thống nhất về nhà nước sau 1975", "Mở đầu công cuộc Đổi mới 1986", "Chỉ phát triển công nghiệp dịch vụ", "Chống xâm lược, hoàn thành giải phóng dân tộc"], ans: 3, exp: "Đại hội II tập trung nhiệm vụ giải phóng dân tộc." },
+            { id: 165, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Ai được bầu làm Chủ tịch Đảng tại Đại hội II?", opts: ["Nguyễn Hữu Thọ", "Hồ Chí Minh", "Lê Hồng Phong", "Trường Chinh"], ans: 1, exp: "Slide 14 nêu Hồ Chí Minh được bầu làm Chủ tịch Đảng." },
+            { id: 166, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Ai được bầu lại làm Tổng Bí thư tại Đại hội II?", opts: ["Hồ Chí Minh", "Trường Chinh", "Lê Hồng Phong", "Nguyễn Hữu Thọ"], ans: 1, exp: "Theo slide 14, Trường Chinh được bầu lại làm Tổng Bí thư." },
+            { id: 167, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Mặt trận được thành lập có tên gọi nào?", opts: ["Mặt trận Liên hiệp quốc dân Việt Nam (Liên Việt)", "Mặt trận Việt Minh giai đoạn 1941", "Mặt trận Dân tộc giải phóng miền Nam Việt Nam", "Hội Việt Nam Cách mạng Thanh niên"], ans: 0, exp: "Slide 14 ghi Mặt trận Liên hiệp quốc dân Việt Nam, gọi tắt Liên Việt." },
+            { id: 168, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Tư duy đổi mới về chiến lược quân sự giai đoạn 1950–1954 là gì?", opts: ["Chuyển từ tấn công sang hòa bình hoàn toàn", "Chỉ giữ nguyên tư thế phòng ngự", "Chuyển từ phòng ngự sang phản công", "Không tổ chức chiến dịch quân sự"], ans: 2, exp: "Slide 14 nhắc lại chuyển biến phòng ngự sang phản công." },
+            { id: 169, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Hội nghị Trung ương 5 và Hội nghị toàn quốc của Đảng năm 1953 thông qua văn kiện nào?", opts: ["Hiến pháp năm 1946", "Cương lĩnh ruộng đất", "Đề cương văn hóa Việt Nam", "Cương lĩnh năm 2011"], ans: 1, exp: "Slide 14 ghi thông qua Cương lĩnh ruộng đất." },
+            { id: 170, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Văn kiện Cương lĩnh ruộng đất được thông qua vào thời gian nào theo slide 14?", opts: ["Tháng 11/1953", "Tháng 7/1936", "Tháng 12/1944", "Tháng 7/1973"], ans: 0, exp: "Slide 14 ghi mốc 11/1953." },
+            { id: 171, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Trong Đông – Xuân 1953–1954, ta chủ trương tiến công vào những hướng nào?", opts: ["Những hướng có tầm quan trọng chiến lược", "Chỉ các đô thị nhỏ", "Chỉ khu vực ven biển", "Chỉ những nơi hoàn toàn không có địch"], ans: 0, exp: "Slide 14 nhấn mạnh lựa chọn hướng có tầm quan trọng chiến lược." },
+            { id: 172, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Phương châm tác chiến được gắn với Chiến dịch Điện Biên Phủ là gì?", opts: ["Chỉ phòng thủ, không tấn công", "Đánh chắc, tiến chắc, chắc thắng", "Chỉ đấu tranh ngoại giao", "Đánh nhanh, thắng nhanh bằng mọi giá"], ans: 1, exp: "Slide 14 nhấn mạnh phương châm chắc thắng trong chỉ đạo chiến dịch." },
+            { id: 173, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Cách đánh tại Điện Biên Phủ được slide 14 gọi là gì?", opts: ["Đánh du kích tại đô thị", "Đánh trên biển là chủ yếu", "Đánh không cần hậu cần", "Đánh bóc vỏ"], ans: 3, exp: "Slide 14 nêu cách đánh “đánh bóc vỏ”." },
+            { id: 174, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Chiến thắng Điện Biên Phủ thể hiện vai trò nào của lực lượng cách mạng theo slide?", opts: ["Chỉ phụ thuộc vào đối phương", "Không có phương châm quân sự", "Hoàn toàn bị động trên chiến trường", "Vai trò chủ động trong quyết định chiến trường"], ans: 3, exp: "Slide 14 đánh giá sự chủ động chọn và quyết định chiến trường." },
+            { id: 175, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Hiệp định Giơ-ne-vơ giải quyết vấn đề gì?", opts: ["Chỉ phát triển xuất khẩu hàng tiêu dùng", "Thành lập Đảng Cộng sản Việt Nam", "Bầu Quốc hội năm 1946", "Chấm dứt chiến tranh, lập lại hòa bình ở Đông Dương"], ans: 3, exp: "Slide 14 ghi mục đích chấm dứt chiến tranh và lập lại hòa bình." },
+            { id: 176, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Ý nghĩa của Hiệp định Giơ-ne-vơ được slide 14 nhấn mạnh là gì?", opts: ["Việt Nam chính thức gia nhập WTO", "Đảng đổi tên thành Đảng Lao động Việt Nam", "Các quyền dân tộc cơ bản của Việt Nam được ghi nhận", "Đất nước thực hiện Đổi mới kinh tế"], ans: 2, exp: "Slide 14 nhấn mạnh việc ghi nhận quyền dân tộc cơ bản." },
+            { id: 177, slide: 14, topic: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", q: "Nhân tố trực tiếp mang tính quyết định đối với thắng lợi kháng chiến chống Pháp theo slide 14 là gì?", opts: ["Chỉ kết quả của ngoại giao mà không có chiến đấu", "Chỉ ưu thế vũ khí của Pháp", "Đoàn kết, nhất trí của toàn Đảng, toàn dân, toàn quân", "Chỉ tình hình kinh tế thế giới"], ans: 2, exp: "Slide 14 nêu tinh thần đoàn kết và nhất trí là nhân tố quyết định trực tiếp." },
+
+            // Slide 15
+            { id: 178, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Nhiệm vụ trước mắt của cách mạng Việt Nam sau Hiệp định Giơ-ne-vơ là gì?", opts: ["Khôi phục kinh tế, hàn gắn chiến tranh, đòi thi hành Hiệp định", "Đổi mới toàn diện nền kinh tế", "Phát động kháng chiến toàn quốc 1946", "Thực hiện Tổng tuyển cử thống nhất năm 1976"], ans: 0, exp: "Slide 15 nêu các nhiệm vụ cấp bách sau 1954." },
+            { id: 179, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Nhiệm vụ chiến lược của miền Bắc giai đoạn 1954–1975 là gì?", opts: ["Tiến hành cách mạng dân tộc dân chủ nhân dân như miền Nam", "Chỉ tiến hành Đổi mới từ 1986", "Chỉ chiến đấu giành chính quyền ở nông thôn", "Xây dựng chủ nghĩa xã hội"], ans: 3, exp: "Slide 15 phân công miền Bắc xây dựng chủ nghĩa xã hội." },
+            { id: 180, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Nhiệm vụ chiến lược của miền Nam giai đoạn 1954–1975 là gì?", opts: ["Chỉ đẩy mạnh công nghiệp hóa", "Thực hiện cải tạo xã hội chủ nghĩa trên cả nước ngay lập tức", "Tiến hành cách mạng dân tộc dân chủ nhân dân", "Chỉ tiến hành hội nhập kinh tế"], ans: 2, exp: "Slide 15 xác định nhiệm vụ cách mạng dân tộc dân chủ nhân dân ở miền Nam." },
+            { id: 181, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Nhiệm vụ nổi bật trong giai đoạn 1954–1960 theo slide 15 là gì?", opts: ["Giành thắng lợi Điện Biên Phủ", "Giữ gìn, củng cố lực lượng và đấu tranh chính trị", "Thực hiện Đổi mới kinh tế", "Mở chiến dịch Hồ Chí Minh"], ans: 1, exp: "Slide 15 nêu trọng tâm giữ gìn, củng cố lực lượng, đấu tranh chính trị." },
+            { id: 182, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Điểm độc đáo về đường lối sau năm 1954 là gì?", opts: ["Chỉ thực hiện ngoại giao", "Đồng thời tiến hành cách mạng dân tộc dân chủ ở miền Nam và cách mạng xã hội chủ nghĩa ở miền Bắc", "Chỉ tập trung nhiệm vụ ở miền Bắc", "Không có nhiệm vụ thống nhất đất nước"], ans: 1, exp: "Slide 15 mô tả hai nhiệm vụ chiến lược đồng thời của hai miền." },
+            { id: 183, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Hội nghị Trung ương 15 được tổ chức vào thời gian nào?", opts: ["Tháng 7/1936", "Tháng 1/1959", "Tháng 2/1951", "Tháng 7/1973"], ans: 1, exp: "Slide 15 ghi Hội nghị Trung ương 15 tháng 1/1959." },
+            { id: 184, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Hội nghị Trung ương 15 xác định phương hướng giành chính quyền ở miền Nam như thế nào?", opts: ["Chỉ bằng lực lượng quân sự nước ngoài", "Lực lượng chính trị là chủ yếu, kết hợp lực lượng vũ trang", "Không sử dụng bất kỳ lực lượng cách mạng nào", "Chỉ bằng đàm phán kinh tế"], ans: 1, exp: "Slide 15 nhấn mạnh khởi nghĩa với lực lượng chính trị chủ yếu, kết hợp vũ trang." },
+            { id: 185, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Chủ trương của Hội nghị Trung ương 15 tạo điều kiện cho phong trào nào?", opts: ["Phong trào Đồng Khởi", "Phong trào Xô viết Nghệ - Tĩnh", "Phong trào Vô sản hóa", "Phong trào 1936–1939"], ans: 0, exp: "Slide 15 liên hệ trực tiếp với phong trào Đồng Khởi." },
+            { id: 186, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Ý nghĩa bước ngoặt của phong trào Đồng Khởi là gì?", opts: ["Thành lập Đảng năm 1930", "Đưa cách mạng miền Nam từ giữ gìn lực lượng sang tiến công", "Mở đầu công cuộc Đổi mới", "Kết thúc chiến tranh chống Mỹ ngay lập tức"], ans: 1, exp: "Slide 15 nêu chuyển biến thế cách mạng miền Nam." },
+            { id: 187, slide: 15, topic: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", q: "Ai được slide 15 nêu là Chủ tịch Mặt trận Dân tộc giải phóng miền Nam Việt Nam?", opts: ["Lê Hồng Phong", "Trường Chinh", "Nguyễn Hữu Thọ", "Nguyễn Ái Quốc"], ans: 2, exp: "Slide 15 ghi Nguyễn Hữu Thọ là Chủ tịch Mặt trận Dân tộc giải phóng miền Nam Việt Nam." }
+        ];
+
+        // Slide list metadata
+        const slideList = [
+            { id: 1, title: "Slide 01 — Đối tượng, phạm vi, phương pháp", count: 8 },
+            { id: 2, title: "Slide 02 — Mục tiêu và ý nghĩa học tập", count: 7 },
+            { id: 3, title: "Slide 03 — Kỹ năng và chức năng môn học", count: 8 },
+            { id: 4, title: "Slide 04 — Bối cảnh ra đời của Đảng", count: 11 },
+            { id: 5, title: "Slide 05 — Nguyễn Ái Quốc tìm đường cứu nước", count: 14 },
+            { id: 6, title: "Slide 06 — Ba tổ chức cộng sản & thành lập Đảng", count: 13 },
+            { id: 7, title: "Slide 07 — Cương lĩnh đầu tiên & Luận cương", count: 16 },
+            { id: 8, title: "Slide 08 — Phong trào cách mạng 1930–1939", count: 13 },
+            { id: 9, title: "Slide 09 — Chuyển hướng chiến lược 1939–1945", count: 13 },
+            { id: 10, title: "Slide 10 — Văn hóa & lực lượng vũ trang", count: 8 },
+            { id: 11, title: "Slide 11 — Cách mạng Tháng Tám 1945", count: 15 },
+            { id: 12, title: "Slide 12 — Xây dựng, bảo vệ chính quyền 1945–1946", count: 19 },
+            { id: 13, title: "Slide 13 — Kháng chiến toàn quốc 1946–1954", count: 16 },
+            { id: 14, title: "Slide 14 — Đại hội II, Điện Biên Phủ, Giơ-ne-vơ", count: 16 },
+            { id: 15, title: "Slide 15 — Hai nhiệm vụ chiến lược 1954–1975", count: 10 }
+        ];
+
+        // -------------------------------------------------------------
+        // STATE MANAGEMENT
+        // -------------------------------------------------------------
+        let userAnswers = {}; // { qId: selectedOptionIdx }
+        let bookmarks = new Set(); // Set of qIds
+        let currentView = 'dashboard';
+
+        // Practice State
+        let activePracticeQuestions = [...rawQuestions];
+        let currentPracticeIdx = 0;
+
+        // Flashcard State
+        let currentFlashcardIdx = 0;
+        let isFlashcardFlipped = false;
+
+        // Exam State
+        let examQuestions = [];
+        let examUserAnswers = {};
+        let currentExamIdx = 0;
+        let examTimerInterval = null;
+        let examTimeRemaining = 0;
+        let selectedExamCount = 50;
+
+        // Initialize App on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStateFromStorage();
+            renderSlideCards();
+            updateDashboardStats();
+            populateExamSlideDropdown();
+            filterQuestionsSearch();
+        });
+
+        // Save & Load LocalStorage
+        function saveStateToStorage() {
+            localStorage.setItem('lsd_user_answers', JSON.stringify(userAnswers));
+            localStorage.setItem('lsd_bookmarks', JSON.stringify([...bookmarks]));
+        }
+
+        function loadStateFromStorage() {
+            try {
+                const savedAnswers = localStorage.getItem('lsd_user_answers');
+                if (savedAnswers) userAnswers = JSON.parse(savedAnswers);
+
+                const savedBookmarks = localStorage.getItem('lsd_bookmarks');
+                if (savedBookmarks) bookmarks = new Set(JSON.parse(savedBookmarks));
+            } catch (e) {
+                console.error("Lỗi khi tải dữ liệu từ localStorage", e);
+            }
+        }
+
+        function resetProgress() {
+            if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ tiến độ làm bài và đánh dấu không?")) {
+                userAnswers = {};
+                bookmarks = new Set();
+                saveStateToStorage();
+                updateDashboardStats();
+                renderSlideCards();
+                if (currentView === 'practice') renderCurrentPracticeQuestion();
+                alert("Đã đặt lại tiến độ!");
+            }
+        }
+
+        // Toggle Dark Mode
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-gold-400';
+            } else {
+                icon.className = 'fa-solid fa-moon text-lg';
+            }
+        }
+
+        // -------------------------------------------------------------
+        // NAVIGATION & VIEWS SWITCHER
+        // -------------------------------------------------------------
+        function switchView(viewName, filterParam = null) {
+            currentView = viewName;
+            
+            // Hide all view sections
+            ['dashboard', 'practice', 'exam-setup', 'exam-active', 'exam-result', 'flashcard', 'search'].forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            // Update navbar styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-red-50', 'text-red-600', 'dark:bg-red-950/40', 'dark:text-red-400', 'font-bold');
+            });
+
+            const activeNav = document.getElementById(`nav-${viewName.replace('-setup', '')}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-red-50', 'text-red-600', 'dark:bg-red-950/40', 'dark:text-red-400', 'font-bold');
+            }
+
+            // Show selected view
+            const targetView = document.getElementById(`view-${viewName}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            // Specific view initialization
+            if (viewName === 'dashboard') {
+                updateDashboardStats();
+                renderSlideCards();
+            } else if (viewName === 'practice') {
+                renderCurrentPracticeQuestion();
+            } else if (viewName === 'flashcard') {
+                renderFlashcard();
+            } else if (viewName === 'search') {
+                if (filterParam) {
+                    document.getElementById('search-filter-type').value = filterParam;
+                }
+                filterQuestionsSearch();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 1: DASHBOARD LOGIC
+        // -------------------------------------------------------------
+        function updateDashboardStats() {
+            const total = rawQuestions.length;
+            const answeredKeys = Object.keys(userAnswers);
+            const answeredCount = answeredKeys.length;
+            
+            let correctCount = 0;
+            answeredKeys.forEach(qId => {
+                const q = rawQuestions.find(item => item.id == qId);
+                if (q && userAnswers[qId] === q.ans) correctCount++;
+            });
+
+            const accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+            const progressPercent = Math.round((answeredCount / total) * 100);
+
+            document.getElementById('stat-total-q').textContent = total;
+            document.getElementById('stat-answered').textContent = `${answeredCount} / ${total}`;
+            document.getElementById('stat-progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('stat-correct-count').textContent = `${correctCount} câu đúng`;
+            document.getElementById('stat-bookmarked').textContent = bookmarks.size;
+        }
+
+        function renderSlideCards() {
+            const container = document.getElementById('slide-cards-grid');
+            container.innerHTML = '';
+
+            slideList.forEach(slide => {
+                const slideQuestions = rawQuestions.filter(q => q.slide === slide.id);
+                let slideAnswered = 0;
+                let slideCorrect = 0;
+
+                slideQuestions.forEach(q => {
+                    if (userAnswers[q.id] !== undefined) {
+                        slideAnswered++;
+                        if (userAnswers[q.id] === q.ans) slideCorrect++;
+                    }
+                });
+
+                const percent = Math.round((slideAnswered / slide.count) * 100);
+
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group";
+                card.onclick = () => startPracticeSlide(slide.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 px-2.5 py-1 rounded-full">
+                                Slide ${slide.id < 10 ? '0' + slide.id : slide.id}
+                            </span>
+                            <span class="text-xs font-semibold text-slate-400">
+                                ${slideAnswered}/${slide.count} câu
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-3 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                            ${slide.title}
+                        </h4>
+                    </div>
+                    <div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden mb-2">
+                            <div class="bg-gradient-to-r from-red-600 to-amber-500 h-full transition-all duration-300" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                            <span>Tiến độ: ${percent}%</span>
+                            <span class="font-medium text-red-600 dark:text-red-400 flex items-center">
+                                Học ngay <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 2: PRACTICE MODE LOGIC
+        // -------------------------------------------------------------
+        function startPracticeAll() {
+            activePracticeQuestions = [...rawQuestions];
+            currentPracticeIdx = 0;
+            document.getElementById('practice-title').textContent = "Tất cả 187 câu hỏi";
+            document.getElementById('practice-slide-tag').textContent = "TỔNG HỢP";
+            switchView('practice');
+        }
+
+        function startPracticeSlide(slideId) {
+            activePracticeQuestions = rawQuestions.filter(q => q.slide === slideId);
+            currentPracticeIdx = 0;
+            const slideObj = slideList.find(s => s.id === slideId);
+            document.getElementById('practice-title').textContent = slideObj ? slideObj.title : `Slide ${slideId}`;
+            document.getElementById('practice-slide-tag').textContent = `SLIDE ${slideId < 10 ? '0' + slideId : slideId}`;
+            switchView('practice');
+        }
+
+        function renderCurrentPracticeQuestion() {
+            if (activePracticeQuestions.length === 0) return;
+
+            const q = activePracticeQuestions[currentPracticeIdx];
+            document.getElementById('practice-current-idx').textContent = currentPracticeIdx + 1;
+            document.getElementById('practice-total-count').textContent = activePracticeQuestions.length;
+
+            document.getElementById('question-id-badge').textContent = `Câu hỏi #${q.id}`;
+            document.getElementById('question-topic-badge').textContent = q.topic;
+            document.getElementById('question-text').textContent = q.q;
+
+            // Bookmark button state
+            const btnBk = document.getElementById('btn-bookmark');
+            if (bookmarks.has(q.id)) {
+                btnBk.className = "p-2.5 rounded-xl border border-amber-300 dark:border-amber-700 text-amber-500 bg-amber-50 dark:bg-amber-950/40 transition-colors";
+            } else {
+                btnBk.className = "p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-amber-500 transition-colors";
+            }
+
+            // Options rendering
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            const selectedOpt = userAnswers[q.id];
+            const isAnswered = selectedOpt !== undefined;
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            q.opts.forEach((optText, idx) => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "w-full p-4 rounded-xl border text-left flex items-start space-x-3 transition-all relative ";
+
+                if (!isAnswered) {
+                    optBtn.className += "border-slate-200 dark:border-slate-700 hover:border-red-500 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-800 dark:text-slate-200";
+                    optBtn.onclick = () => selectPracticeAnswer(q.id, idx);
+                } else {
+                    // Highlight correct & incorrect
+                    if (idx === q.ans) {
+                        optBtn.className += "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 font-medium";
+                    } else if (idx === selectedOpt && selectedOpt !== q.ans) {
+                        optBtn.className += "border-red-500 bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-200 font-medium";
+                    } else {
+                        optBtn.className += "border-slate-200 dark:border-slate-700 opacity-60 text-slate-600 dark:text-slate-400";
+                    }
+                }
+
+                let iconHtml = `<span class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">${optionLabels[idx]}</span>`;
+                
+                if (isAnswered) {
+                    if (idx === q.ans) {
+                        iconHtml = `<span class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i class="fa-solid fa-check"></i></span>`;
+                    } else if (idx === selectedOpt && selectedOpt !== q.ans) {
+                        iconHtml = `<span class="w-7 h-7 rounded-lg bg-red-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i class="fa-solid fa-xmark"></i></span>`;
+                    }
+                }
+
+                optBtn.innerHTML = `
+                    ${iconHtml}
+                    <span class="text-sm leading-snug pt-1">${optText}</span>
+                `;
+
+                container.appendChild(optBtn);
+            });
+
+            // Explanation box
+            const expBox = document.getElementById('explanation-box');
+            if (isAnswered) {
+                expBox.classList.remove('hidden');
+                document.getElementById('explanation-text').textContent = q.exp;
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            renderQuestionPalette();
+        }
+
+        function selectPracticeAnswer(qId, optIdx) {
+            userAnswers[qId] = optIdx;
+            saveStateToStorage();
+            renderCurrentPracticeQuestion();
+            updateDashboardStats();
+        }
+
+        function prevQuestion() {
+            if (currentPracticeIdx > 0) {
+                currentPracticeIdx--;
+                renderCurrentPracticeQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentPracticeIdx < activePracticeQuestions.length - 1) {
+                currentPracticeIdx++;
+                renderCurrentPracticeQuestion();
+            }
+        }
+
+        function toggleBookmarkCurrent() {
+            const q = activePracticeQuestions[currentPracticeIdx];
+            if (!q) return;
+
+            if (bookmarks.has(q.id)) {
+                bookmarks.delete(q.id);
+            } else {
+                bookmarks.add(q.id);
+            }
+            saveStateToStorage();
+            renderCurrentPracticeQuestion();
+            updateDashboardStats();
+        }
+
+        function renderQuestionPalette() {
+            const palette = document.getElementById('question-palette');
+            palette.innerHTML = '';
+
+            activePracticeQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all ";
+
+                const isCurrent = idx === currentPracticeIdx;
+                const userAns = userAnswers[q.id];
+
+                if (userAns !== undefined) {
+                    if (userAns === q.ans) {
+                        btn.className += "bg-emerald-500 text-white ";
+                    } else {
+                        btn.className += "bg-red-500 text-white ";
+                    }
+                } else {
+                    btn.className += "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 ";
+                }
+
+                if (isCurrent) {
+                    btn.className += "ring-2 ring-amber-400 ring-offset-2 dark:ring-offset-slate-800 scale-110 z-10";
+                }
+
+                btn.textContent = idx + 1;
+                btn.onclick = () => {
+                    currentPracticeIdx = idx;
+                    renderCurrentPracticeQuestion();
+                };
+
+                palette.appendChild(btn);
+            });
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 3: EXAM MODE LOGIC
+        // -------------------------------------------------------------
+        function setExamCount(count) {
+            selectedExamCount = count;
+            document.querySelectorAll('.exam-count-btn').forEach(btn => {
+                btn.classList.remove('border-red-500', 'bg-red-50', 'dark:bg-red-950/20', 'text-red-600');
+                if (parseInt(btn.getAttribute('data-count')) === count) {
+                    btn.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-950/20', 'text-red-600');
+                }
+            });
+        }
+
+        function populateExamSlideDropdown() {
+            const select = document.getElementById('exam-slide-filter');
+            slideList.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.title;
+                select.appendChild(opt);
+            });
+        }
+
+        function startExam() {
+            const slideFilter = document.getElementById('exam-slide-filter').value;
+            let pool = [...rawQuestions];
+
+            if (slideFilter !== 'all') {
+                pool = pool.filter(q => q.slide === parseInt(slideFilter));
+            }
+
+            // Shuffle array
+            pool.sort(() => Math.random() - 0.5);
+
+            const count = Math.min(selectedExamCount, pool.length);
+            examQuestions = pool.slice(0, count);
+
+            examUserAnswers = {};
+            currentExamIdx = 0;
+
+            // Timer (e.g. 15 mins for 20q, 35 mins for 50q)
+            let totalMinutes = 35;
+            if (count <= 20) totalMinutes = 15;
+            if (count > 50) totalMinutes = 60;
+
+            examTimeRemaining = totalMinutes * 60;
+            startExamTimer();
+
+            switchView('exam-active');
+            renderExamQuestion();
+        }
+
+        function startExamTimer() {
+            clearInterval(examTimerInterval);
+            examTimerInterval = setInterval(() => {
+                examTimeRemaining--;
+                if (examTimeRemaining <= 0) {
+                    clearInterval(examTimerInterval);
+                    finishExam();
+                } else {
+                    const mins = Math.floor(examTimeRemaining / 60);
+                    const secs = examTimeRemaining % 60;
+                    document.getElementById('exam-timer').textContent = `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+                }
+            }, 1000);
+        }
+
+        function renderExamQuestion() {
+            if (examQuestions.length === 0) return;
+
+            const q = examQuestions[currentExamIdx];
+            document.getElementById('exam-current-num').textContent = currentExamIdx + 1;
+            document.getElementById('exam-total-num').textContent = examQuestions.length;
+            document.getElementById('exam-question-text').textContent = q.q;
+
+            const container = document.getElementById('exam-options-container');
+            container.innerHTML = '';
+
+            const selectedOpt = examUserAnswers[q.id];
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            q.opts.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 rounded-xl border text-left flex items-start space-x-3 transition-all ";
+
+                if (selectedOpt === idx) {
+                    btn.className += "border-red-500 bg-red-50 dark:bg-red-950/30 text-red-900 dark:text-red-200 font-semibold";
+                } else {
+                    btn.className += "border-slate-200 dark:border-slate-700 hover:border-slate-400 text-slate-800 dark:text-slate-200";
+                }
+
+                btn.onclick = () => {
+                    examUserAnswers[q.id] = idx;
+                    renderExamQuestion();
+                };
+
+                btn.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg ${selectedOpt === idx ? 'bg-red-600 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'} flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">${optionLabels[idx]}</span>
+                    <span class="text-sm leading-snug pt-1">${optText}</span>
+                `;
+
+                container.appendChild(btn);
+            });
+        }
+
+        function prevExamQuestion() {
+            if (currentExamIdx > 0) {
+                currentExamIdx--;
+                renderExamQuestion();
+            }
+        }
+
+        function nextExamQuestion() {
+            if (currentExamIdx < examQuestions.length - 1) {
+                currentExamIdx++;
+                renderExamQuestion();
+            }
+        }
+
+        function finishExam() {
+            clearInterval(examTimerInterval);
+
+            let correctCount = 0;
+            examQuestions.forEach(q => {
+                if (examUserAnswers[q.id] === q.ans) {
+                    correctCount++;
+                }
+            });
+
+            const score = ((correctCount / examQuestions.length) * 10).toFixed(1);
+
+            document.getElementById('result-score-text').textContent = `${score} / 10`;
+            document.getElementById('result-correct-text').textContent = `${correctCount} / ${examQuestions.length}`;
+
+            switchView('exam-result');
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 4: FLASHCARD LOGIC
+        // -------------------------------------------------------------
+        function renderFlashcard() {
+            if (rawQuestions.length === 0) return;
+
+            const q = rawQuestions[currentFlashcardIdx];
+            document.getElementById('fc-current-idx').textContent = currentFlashcardIdx + 1;
+            document.getElementById('fc-total-count').textContent = rawQuestions.length;
+
+            document.getElementById('fc-topic').textContent = q.topic;
+            document.getElementById('fc-question').textContent = q.q;
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+            document.getElementById('fc-answer').textContent = `Đáp án: ${optionLabels[q.ans]} — ${q.opts[q.ans]}`;
+            document.getElementById('fc-explanation').textContent = q.exp;
+
+            // Reset flip state
+            isFlashcardFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+        }
+
+        function flipFlashcard() {
+            isFlashcardFlipped = !isFlashcardFlipped;
+            const inner = document.getElementById('flashcard-inner');
+            if (isFlashcardFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function prevFlashcard() {
+            if (currentFlashcardIdx > 0) {
+                currentFlashcardIdx--;
+                renderFlashcard();
+            }
+        }
+
+        function nextFlashcard() {
+            if (currentFlashcardIdx < rawQuestions.length - 1) {
+                currentFlashcardIdx++;
+                renderFlashcard();
+            }
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 5: SEARCH & REVIEW LOGIC
+        // -------------------------------------------------------------
+        function filterQuestionsSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const filterType = document.getElementById('search-filter-type').value;
+
+            const listContainer = document.getElementById('search-results-list');
+            listContainer.innerHTML = '';
+
+            let filtered = rawQuestions.filter(q => {
+                const matchesText = q.q.toLowerCase().includes(query) || q.exp.toLowerCase().includes(query) || q.topic.toLowerCase().includes(query);
+                
+                if (!matchesText) return false;
+
+                if (filterType === 'bookmarked') {
+                    return bookmarks.has(q.id);
+                } else if (filterType === 'incorrect') {
+                    return userAnswers[q.id] !== undefined && userAnswers[q.id] !== q.ans;
+                }
+
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <i class="fa-solid fa-folder-open text-4xl text-slate-300 dark:text-slate-600 mb-2"></i>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Không tìm thấy câu hỏi phù hợp với bộ lọc.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            filtered.forEach(q => {
+                const item = document.createElement('div');
+                item.className = "bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3";
+
+                const isBk = bookmarks.has(q.id);
+                const userAns = userAnswers[q.id];
+
+                item.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-red-600 dark:text-red-400">Câu hỏi #${q.id} • ${q.topic}</span>
+                        <button onclick="toggleBookmarkSearch(${q.id})" class="text-sm ${isBk ? 'text-amber-500' : 'text-slate-300 dark:text-slate-600 hover:text-amber-500'}">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </button>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base">${q.q}</h4>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 text-xs space-y-1">
+                        <p class="font-semibold text-emerald-600 dark:text-emerald-400">
+                            ✓ Đáp án đúng: ${optionLabels[q.ans]} — ${q.opts[q.ans]}
+                        </p>
+                        ${userAns !== undefined && userAns !== q.ans ? `<p class="text-red-500 font-medium">❌ Lần trước bạn chọn: ${optionLabels[userAns]} — ${q.opts[userAns]}</p>` : ''}
+                        <p class="text-slate-600 dark:text-slate-400 italic mt-1">Giải thích: ${q.exp}</p>
+                    </div>
+                `;
+
+                listContainer.appendChild(item);
+            });
+        }
+
+        function toggleBookmarkSearch(qId) {
+            if (bookmarks.has(qId)) {
+                bookmarks.delete(qId);
+            } else {
+                bookmarks.add(qId);
+            }
+            saveStateToStorage();
+            filterQuestionsSearch();
+            updateDashboardStats();
+        }
+
+        // Global Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (currentView === 'practice') {
+                if (e.key === 'ArrowLeft') prevQuestion();
+                if (e.key === 'ArrowRight') nextQuestion();
+                if (e.key === '1' || e.key === 'a' || e.key === 'A') selectPracticeAnswer(activePracticeQuestions[currentPracticeIdx].id, 0);
+                if (e.key === '2' || e.key === 'b' || e.key === 'B') selectPracticeAnswer(activePracticeQuestions[currentPracticeIdx].id, 1);
+                if (e.key === '3' || e.key === 'c' || e.key === 'C') selectPracticeAnswer(activePracticeQuestions[currentPracticeIdx].id, 2);
+                if (e.key === '4' || e.key === 'd' || e.key === 'D') selectPracticeAnswer(activePracticeQuestions[currentPracticeIdx].id, 3);
+            } else if (currentView === 'flashcard') {
+                if (e.key === ' ' || e.key === 'Enter') flipFlashcard();
+                if (e.key === 'ArrowLeft') prevFlashcard();
+                if (e.key === 'ArrowRight') nextFlashcard();
+            }
+        });
+    </script>
+</body>
+</html>
